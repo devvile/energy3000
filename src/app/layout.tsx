@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://e3000.pl"),
   title: "E3000 — magazyn energii do Twojej fotowoltaiki | Kielce i okolice",
   description:
-    "Dokładamy magazyn energii do istniejącej fotowoltaiki: dobór, montaż w jeden dzień i pomoc we wniosku o dotację z programu Mój Prąd. Cena podana wprost, oddzwaniamy w 30 minut.",
+    "Dobieramy magazyn energii do Twojej fotowoltaiki, montujemy go w jeden dzień i pomagamy załatwić dotację z programu Mój Prąd. Cenę znasz od razu, oddzwaniamy w 30 minut.",
   openGraph: {
     title: "E3000 — Słońce za dnia. Prąd na noc.",
     description: "Magazyn energii do Twojej fotowoltaiki z montażem i pomocą przy dotacji. Kielce + 100 km.",

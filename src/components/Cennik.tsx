@@ -15,14 +15,14 @@ export function Cennik() {
               <span className="h-px w-8 bg-foreground/40" /> Cena
             </p>
             <Words
-              text={"Cena podana wprost.\nBez „indywidualnej wyceny”."}
-              accent="wprost."
+              text={"Cenę znasz od razu.\nNie po wizycie handlowca."}
+              accent="razu."
               className="text-[clamp(2.4rem,5.2vw,5.2rem)] font-medium leading-[0.98] tracking-[-0.05em]"
             />
           </div>
           <p data-reveal className="max-w-sm text-base leading-relaxed text-foreground/70">
-            Ceny brutto z montażem, falownikiem i pomocą przy wniosku. Pojemność dobieramy do mocy paneli: program
-            wymaga co najmniej 10&nbsp;kWh i&nbsp;2&nbsp;kWh na każdy 1&nbsp;kWp.
+            Ceny brutto, a w nich montaż, falownik i pomoc przy wniosku. Wielkość magazynu zależy od mocy paneli:
+            program wymaga co najmniej 10&nbsp;kWh i&nbsp;2&nbsp;kWh na każdy kilowat paneli.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export function Cennik() {
                   </span>
                 )}
                 <p className={`font-mono text-[11px] uppercase tracking-[0.2em] ${p.featured ? "text-ink/50" : "text-foreground/50"}`}>
-                  {p.name} · fotowoltaika {p.pv}
+                  {p.name} · do paneli {p.pv}
                 </p>
                 <p className="mt-8 text-7xl font-medium tracking-[-0.06em] sm:text-8xl">
                   {p.kwh}
@@ -57,17 +57,17 @@ export function Cennik() {
                     <dd className="font-medium">{zl(p.price)}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="opacity-60">Dotacja (szacunkowo)</dt>
+                    <dt className="opacity-60">Zwrot z dotacji (ok.)</dt>
                     <dd className="font-medium text-[#1f9d63]">− {zl(subsidy)}</dd>
                   </div>
                   <div className="flex items-baseline justify-between pt-2">
-                    <dt className="opacity-60">Po zwrocie dotacji</dt>
+                    <dt className="opacity-60">Realnie płacisz</dt>
                     <dd className="text-3xl font-medium tracking-[-0.04em]">{zl(p.price - subsidy)}</dd>
                   </div>
                 </dl>
 
                 <p className={`mt-6 rounded-2xl px-4 py-3 text-sm ${p.featured ? "bg-ink/5" : "bg-white/5"}`}>
-                  lub <strong className="font-medium">{zl(monthlyFor(p.price))}/mies.</strong> · raty {INSTALLMENTS.rate}*
+                  albo <strong className="font-medium">{zl(monthlyFor(p.price))} miesięcznie</strong>, raty {INSTALLMENTS.rate}*
                 </p>
 
                 <a
@@ -85,9 +85,9 @@ export function Cennik() {
         </div>
 
         <p data-reveal className="mt-8 max-w-3xl text-xs leading-relaxed text-foreground/50">
-          Dotacja: {Math.round(SUBSIDY.share * 100)}% kosztu, maks. {SUBSIDY.perKwh} zł za 1 kWh i&nbsp;
-          {zl(SUBSIDY.capNetBilling)} (rozliczenie net-billing) lub {zl(SUBSIDY.capNetMetering)} (net-metering). Wypłaca ją
-          NFOŚiGW po montażu. Ceny orientacyjne, dokładną kwotę podajemy w ofercie po rozmowie o Twojej instalacji. *{" "}
+          Dotacja to {Math.round(SUBSIDY.share * 100)}% kosztu, ale nie więcej niż {SUBSIDY.perKwh} zł za każdą kWh
+          i&nbsp;nie więcej niż {zl(SUBSIDY.capNetBilling)} (net-billing) albo {zl(SUBSIDY.capNetMetering)} (net-metering).
+          Wypłaca ją NFOŚiGW po montażu. Ceny są orientacyjne, dokładną kwotę podamy w ofercie. *{" "}
           {INSTALLMENTS.note}
         </p>
       </div>

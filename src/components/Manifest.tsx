@@ -4,7 +4,7 @@ import { useCallback, useRef } from "react";
 import { range, useScrollProgress } from "@/lib/useScrollProgress";
 
 const TEXT =
-  "Twoje panele produkują najwięcej w południe, gdy nikogo nie ma w domu. Nadwyżkę oddajesz do sieci za grosze, a wieczorem kupujesz prąd z powrotem. Magazyn zatrzymuje słońce na wieczór.";
+  "Najwięcej prądu panele dają w południe, a wtedy w domu zwykle nikogo nie ma. Nadwyżka idzie do sieci za grosze, a wieczorem kupujesz prąd z powrotem, dużo drożej. Magazyn zatrzymuje słońce na wieczór.";
 
 // Manifest: słowa rozjaśniają się jedno po drugim w rytm przewijania
 export function Manifest() {
@@ -28,7 +28,7 @@ export function Manifest() {
       <div className="sticky top-0 flex h-svh items-center px-5 sm:px-8">
         <div className="mx-auto w-full max-w-6xl">
           <p className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50">
-            <span className="h-px w-8 bg-foreground/40" /> Dlaczego magazyn
+            <span className="h-px w-8 bg-foreground/40" /> Po co magazyn
           </p>
           <p className="text-[clamp(1.9rem,4.6vw,4.6rem)] font-medium leading-[1.08] tracking-[-0.04em]">
             {words.map((w, i) => {

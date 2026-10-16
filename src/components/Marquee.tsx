@@ -1,10 +1,10 @@
 const ITEMS = [
-  "Cena podana wprost",
+  "Cena od razu",
   "Oddzwaniamy w 30 minut",
-  "Wniosek o dotację w cenie",
+  "Pomoc przy dotacji",
   "Montaż w jeden dzień",
   "Elektryk z uprawnieniami",
-  "Baterie LFP",
+  "Bezpieczne baterie LFP",
   "Raty 0%",
 ];
 

@@ -54,14 +54,14 @@ export function Region() {
         </div>
         <div className="flex flex-col justify-center gap-8 lg:order-1">
           <p data-reveal className="text-[clamp(1.5rem,2.6vw,2.2rem)] font-medium leading-[1.2] tracking-[-0.03em]">
-            Za marką E3000 stoi firma produkcyjna z&nbsp;Bilczy pod Kielcami. Montaże wykonuje elektryk z uprawnieniami
-            i&nbsp;ubezpieczeniem, z naszego regionu.
+            E3000 to marka firmy produkcyjnej z&nbsp;Bilczy pod Kielcami. Magazyny montuje elektryk z&nbsp;uprawnieniami
+            i&nbsp;ubezpieczeniem, też stąd.
           </p>
           <ul className="space-y-4 border-t border-white/10 pt-8 text-base text-foreground/75">
             {[
-              "Jedna osoba prowadzi Cię od telefonu do wypłaty dotacji",
-              "Elektryk przyjeżdża obejrzeć instalację przed montażem",
-              "Serwis i pytania techniczne: dzwonisz do nas, nie na infolinię w innym mieście",
+              "Od pierwszego telefonu do wypłaty dotacji rozmawiasz z jedną osobą",
+              "Przed montażem elektryk przyjeżdża obejrzeć instalację",
+              "Gdy coś się dzieje, dzwonisz do nas, a nie na infolinię na drugim końcu Polski",
             ].map((t) => (
               <li key={t} data-reveal className="flex gap-4">
                 <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-led" />

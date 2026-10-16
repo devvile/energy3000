@@ -4,9 +4,9 @@ import { Countdown } from "./Countdown";
 import { Words } from "./Words";
 
 const STATS = [
-  { value: "16 000", unit: "zł", label: "maks. dotacji przy rozliczeniu net-billing (PV zgłoszona od IV 2022)" },
-  { value: "30", unit: "%", label: "kosztu magazynu z montażem wraca do Ciebie" },
-  { value: SUBSIDY.payoutMonths, unit: "mies.", label: "tyle zwykle trwa wypłata po złożeniu wniosku" },
+  { value: "16 000", unit: "zł", label: "tyle możesz dostać najwyżej, jeśli panele rozliczasz w net-billingu (zgłoszone od kwietnia 2022)" },
+  { value: "30", unit: "%", label: "kosztu magazynu z montażem wraca na Twoje konto" },
+  { value: SUBSIDY.payoutMonths, unit: "mies.", label: "tyle zwykle czeka się na przelew po złożeniu wniosku" },
 ];
 
 // Dotacja „uczciwie”: najważniejsze liczby i zastrzeżenie, że najpierw płaci się całość
@@ -20,8 +20,8 @@ export function Dotacja() {
               <span className="h-px w-8 bg-ink/40" /> Dotacja Mój Prąd · magazyny energii
             </p>
             <Words
-              text={"Dotacja, uczciwie.\nOd pierwszej rozmowy."}
-              accent="uczciwie."
+              text={"O dotacji mówimy\nwszystko od razu."}
+              accent="wszystko"
               className="text-[clamp(2.6rem,5.6vw,5.6rem)] font-medium leading-[0.95] tracking-[-0.05em]"
             />
           </div>
@@ -31,8 +31,8 @@ export function Dotacja() {
               <Countdown />
             </p>
             <p className="mt-4 text-sm leading-relaxed text-cream/70">
-              Wnioski od 20 października 2026 do {SUBSIDY.end} albo do wyczerpania puli {SUBSIDY.pool}. Rozpatrywane
-              w kolejności zgłoszeń.
+              Wnioski można składać od 20 października 2026 do {SUBSIDY.end}, chyba że pieniądze skończą się wcześniej
+              (pula to {SUBSIDY.pool}). Liczy się kolejność zgłoszeń.
             </p>
           </div>
         </div>
@@ -61,10 +61,10 @@ export function Dotacja() {
             <span className="font-serif italic text-ink/70">Dotacja wraca po montażu.</span>
           </p>
           <p className="text-base leading-relaxed text-ink/70">
-            Wniosek składa się dopiero, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura jest
-            zapłacona. Mówimy o tym od pierwszej rozmowy, nie po podpisaniu umowy. Decyzję podejmuje NFOŚiGW, a my dbamy,
-            żeby sprzęt spełniał wymagania programu i żeby dokumenty były kompletne. Raty możesz częściowo spłacić z
-            dotacji.
+            Wniosek można złożyć dopiero wtedy, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura
+            jest zapłacona. Mówimy o tym na samym początku, żeby nie było niespodzianek. O dotacji decyduje NFOŚiGW. My
+            pilnujemy, żeby sprzęt spełniał wymagania programu, a dokumenty były kompletne. Jeśli bierzesz raty, część
+            możesz potem spłacić z dotacji.
           </p>
         </div>
       </div>

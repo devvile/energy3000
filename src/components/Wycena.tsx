@@ -25,12 +25,13 @@ export function Wycena() {
               <span className="h-px w-8 bg-ink/50" /> Bezpłatna wycena
             </p>
             <Words
-              text={"Jedna rozmowa.\nCena, dotacja, termin."}
-              accent="rozmowa."
+              text={"Oddzwonimy\nw pół godziny."}
+              accent="godziny."
               className="text-[clamp(2.6rem,5.6vw,5.6rem)] font-medium leading-[0.95] tracking-[-0.05em]"
             />
             <p data-reveal className="mt-8 max-w-md text-lg leading-relaxed text-ink/75">
-              Zostaw numer, oddzwonimy w ciągu 30 minut. Bez zobowiązań i bez wizyty handlowca w domu.
+              Zostaw numer. W jednej rozmowie dowiesz się, ile kosztuje magazyn do Twoich paneli, ile dostaniesz dotacji
+              i kiedy możemy przyjechać. Bez zobowiązań.
             </p>
           </div>
 
@@ -52,7 +53,7 @@ export function Wycena() {
               <span className="flex size-14 items-center justify-center rounded-full bg-led text-2xl text-ink">✓</span>
               <h3 className="mt-8 text-4xl font-medium tracking-[-0.04em]">Dziękujemy!</h3>
               <p className="mt-4 max-w-sm text-lg leading-relaxed text-ink/70">
-                Oddzwonimy w ciągu 30 minut ({HOURS}). Zgłoszenia z wieczora: następnego dnia rano.
+                Zadzwonimy w ciągu 30 minut ({HOURS}). Jeśli piszesz wieczorem, oddzwonimy rano.
               </p>
             </div>
           ) : (
@@ -110,8 +111,8 @@ export function Wycena() {
                 </div>
                 {pv === "nie" && (
                   <p className="mt-3 text-sm text-ink/60">
-                    Na razie montujemy magazyny do istniejącej fotowoltaiki. Zostaw numer, odezwiemy się, gdy poszerzymy
-                    ofertę.
+                    Na razie dokładamy magazyny do paneli, które już działają. Zostaw numer, a odezwiemy się, gdy
+                    poszerzymy ofertę.
                   </p>
                 )}
               </fieldset>

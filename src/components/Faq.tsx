@@ -3,31 +3,31 @@ import { Words } from "./Words";
 const QA = [
   [
     "Kiedy dostanę dotację?",
-    "Po montażu. Wniosek składa się, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura jest w całości zapłacona. Od złożenia wniosku do wypłaty mija zwykle 4–7 miesięcy.",
+    "Po montażu. Wniosek można złożyć dopiero wtedy, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura jest zapłacona. Na przelew czeka się zwykle 4–7 miesięcy.",
   ],
   [
     "Czy muszę od razu zapłacić całość?",
-    "Tak, dotacja jest zwrotem części kosztu, a nie zniżką przy zakupie. Dlatego oferujemy raty: część kredytu możesz spłacić, gdy dotacja wpłynie na konto.",
+    "Tak. Dotacja to zwrot części pieniędzy, a nie zniżka przy zakupie. Dlatego można u nas kupić na raty, a gdy dotacja przyjdzie, spłacić nią część kredytu.",
   ],
   [
     "Kto może dostać dotację?",
-    "Osoba prywatna, na którą jest umowa z dostawcą prądu i która ma fotowoltaikę podłączoną do sieci. Umowa nie może być na firmę.",
+    "Osoba prywatna, która ma fotowoltaikę podłączoną do sieci i umowę na prąd na siebie. Umowa nie może być na firmę.",
   ],
   [
     "Mam stare zasady rozliczeń (opusty). Czy to się opłaca?",
-    "Dotacja wynosi wtedy do 8 000 zł, a po przejściu na nowe zasady (net-billing) do 16 000 zł. Czy warto przechodzić, zależy od instalacji. Policzymy to w rozmowie.",
+    "Wtedy dotacja wynosi do 8 000 zł, a po przejściu na nowe zasady (net-billing) do 16 000 zł. Czy warto przechodzić, zależy od instalacji, więc policzymy to razem.",
   ],
   [
     "Po co nowy falownik, skoro mam już jeden?",
-    "Większość falowników przy starszych instalacjach nie obsługuje baterii. Zwykle montujemy falownik hybrydowy, który steruje i panelami, i magazynem. Sprawdzimy to po zdjęciu tabliczki.",
+    "Starsze falowniki zwykle nie współpracują z baterią. Montujemy wtedy falownik hybrydowy, który steruje i panelami, i magazynem. Wystarczy nam zdjęcie tabliczki, żeby to sprawdzić.",
   ],
   [
     "Ile trwa montaż i gdzie stoi magazyn?",
-    "Zwykle jeden dzień, bez wchodzenia na dach. Magazyn wisi albo stoi w garażu, kotłowni czy pomieszczeniu gospodarczym i jest wielkości wąskiej szafki.",
+    "Zwykle jeden dzień i nikt nie wchodzi na dach. Magazyn wisi albo stoi w garażu, kotłowni czy innym pomieszczeniu gospodarczym. Jest wielkości wąskiej szafki.",
   ],
   [
     "Czy magazyn jest bezpieczny?",
-    "Montujemy baterie LFP, najbezpieczniejszą technologię stosowaną w domach. Sprzęt jest fabrycznie nowy, z certyfikatami i znakiem CE.",
+    "Montujemy baterie LFP, czyli najbezpieczniejszy rodzaj baterii stosowany w domach. Sprzęt jest nowy, z certyfikatami i znakiem CE.",
   ],
   [
     "Czy magazyn przechowa prąd z lata na zimę?",
@@ -45,8 +45,8 @@ export function Faq() {
             <span className="h-px w-8 bg-ink/40" /> Pytania
           </p>
           <Words
-            text={"Pytacie,\nodpowiadamy."}
-            accent="odpowiadamy."
+            text={"Najczęstsze\npytania."}
+            accent="pytania."
             className="text-[clamp(2.6rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]"
           />
         </div>

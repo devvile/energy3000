@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid gap-12 border-b border-white/10 pb-14 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <p className="max-w-sm text-2xl font-medium leading-snug tracking-[-0.03em]">
-              Magazyny energii do istniejącej fotowoltaiki. Dobór, montaż i wniosek o dotację.
+              Magazyny energii do paneli, które już masz. Dobór, montaż i pomoc przy dotacji.
             </p>
             <p className="mt-4 text-sm text-foreground/50">{REGION}</p>
           </div>

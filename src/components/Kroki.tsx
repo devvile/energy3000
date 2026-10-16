@@ -2,23 +2,23 @@ import type { CSSProperties } from "react";
 import { Words } from "./Words";
 
 const STEPS = [
-  ["Zostawiasz numer", "Formularz zajmuje minutę. Imię, telefon, kod pocztowy."],
-  ["Oddzwaniamy w 30 minut", "Kilka pytań o instalację i prośba o trzy zdjęcia: falownika, rozdzielnicy i miejsca na magazyn."],
-  ["Dostajesz ofertę z ceną", "Konkretny zestaw, cena przed dotacją i po niej, rata. Bez zobowiązań."],
-  ["Montaż i wniosek", "Elektryk montuje magazyn w jeden dzień. My zgłaszamy go do operatora i pomagamy złożyć wniosek o dotację."],
+  ["Zostawiasz numer", "Imię, telefon i kod pocztowy. Zajmie Ci to minutę."],
+  ["Oddzwaniamy w 30 minut", "Pytamy o instalację i prosimy o trzy zdjęcia: falownika, skrzynki z bezpiecznikami i miejsca na magazyn."],
+  ["Dostajesz ofertę", "Konkretny sprzęt, cena przed dotacją i po niej, wysokość raty. Niczego jeszcze nie podpisujesz."],
+  ["Montaż i dotacja", "Elektryk montuje magazyn w jeden dzień. Zgłaszamy go do zakładu energetycznego i pomagamy złożyć wniosek."],
 ];
 
 // Jak to działa w 4 krokach
 export function Kroki() {
   return (
-    <section className="relative bg-[#140c07] px-5 py-24 sm:px-8 sm:py-36">
+    <section id="jak-dziala" className="relative bg-[#140c07] px-5 py-24 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50">
           <span className="h-px w-8 bg-foreground/40" /> Jak to działa
         </p>
         <Words
-          text={"Od telefonu do prądu\nna noc w czterech krokach."}
-          accent="noc"
+          text={"Jak to wygląda\nod Twojej strony."}
+          accent="Twojej"
           className="text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.98] tracking-[-0.05em]"
         />
 
