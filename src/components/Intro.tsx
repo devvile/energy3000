@@ -49,7 +49,7 @@ export function Intro() {
       }}
     >
       <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-ink/50">
-        <span>ENERGY3000</span>
+        <span>E3000</span>
         <span>Ładowanie magazynu</span>
       </div>
 

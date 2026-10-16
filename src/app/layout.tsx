@@ -20,9 +20,16 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "ENERGY3000 — magazyny energii do fotowoltaiki",
+  metadataBase: new URL("https://e3000.pl"),
+  title: "E3000 — magazyn energii do Twojej fotowoltaiki | Kielce i okolice",
   description:
-    "Magazyny energii do istniejącej fotowoltaiki — dobór, montaż i wniosek o dotację z programu Przydomowe Magazyny Energii. Strona startuje wkrótce.",
+    "Dokładamy magazyn energii do istniejącej fotowoltaiki: dobór, montaż w jeden dzień i pomoc we wniosku o dotację z programu Mój Prąd. Cena podana wprost, oddzwaniamy w 30 minut.",
+  openGraph: {
+    title: "E3000 — Słońce za dnia. Prąd na noc.",
+    description: "Magazyn energii do Twojej fotowoltaiki z montażem i pomocą przy dotacji. Kielce + 100 km.",
+    locale: "pl_PL",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
@@ -38,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <noscript>
-          <style>{`.intro{display:none}.reveal>span{transform:none!important;opacity:1!important}.fade{opacity:1!important;transform:none!important}`}</style>
+          <style>{`.intro{display:none}.reveal>span{transform:none!important;opacity:1!important}.fade{opacity:1!important;transform:none!important}[data-reveal],[data-reveal] img,[data-reveal] .w>span{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
       </body>
     </html>
