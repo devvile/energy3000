@@ -4,11 +4,12 @@ import Link from "next/link";
 import { type CSSProperties, useEffect, useState } from "react";
 import { PHONE, PHONE_HREF } from "@/lib/oferta";
 
+// Kotwice z „/”, żeby działały także z innych stron (np. /konfigurator). Na stronie głównej to zwykłe przewinięcie.
 const NAV = [
-  ["#jak-dziala", "Jak to działa"],
-  ["#cena", "Cena"],
-  ["#dotacja", "Dotacja"],
-  ["#pytania", "Pytania"],
+  ["/#jak-dziala", "Jak to działa"],
+  ["/#cena", "Cena"],
+  ["/#dotacja", "Dotacja"],
+  ["/#pytania", "Pytania"],
 ];
 
 export function Logo({ className = "" }: { className?: string }) {

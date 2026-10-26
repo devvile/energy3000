@@ -1,14 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
+import { formatZl } from "@/lib/konfigurator";
 import { EMAIL, HOURS, PHONE, PHONE_HREF } from "@/lib/oferta";
+import { ZDARZENIE_KONFIGURACJI, type ZdarzenieKonfiguracji } from "./konfigurator/useKonfigurator";
 import { Words } from "./Words";
 
 // Formularz zgłoszenia. TODO: wysyłka do arkusza Google (na razie tylko frontend — pokazuje potwierdzenie).
+// Zestaw z konfiguratora (sekcja „Cena”) dopina się do zgłoszenia sam: nasłuchujemy zdarzenia z useKonfigurator.
 export function Wycena() {
   const [sent, setSent] = useState(false);
   const [pv, setPv] = useState<"tak" | "nie" | "">("");
+  const [zestaw, setZestaw] = useState<ZdarzenieKonfiguracji | null>(null);
+
+  // Konfigurator wysyła zdarzenie także przy pierwszym renderze (z konfiguracją z adresu strony), więc tu tylko słuchamy.
+  useEffect(() => {
+    const onZmiana = (e: Event) => setZestaw((e as CustomEvent<ZdarzenieKonfiguracji>).detail);
+    window.addEventListener(ZDARZENIE_KONFIGURACJI, onZmiana);
+    return () => window.removeEventListener(ZDARZENIE_KONFIGURACJI, onZmiana);
+  }, []);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,6 +69,26 @@ export function Wycena() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-7">
+              {zestaw && (
+                <div className="flex items-start justify-between gap-4 rounded-2xl bg-ink p-4 text-cream sm:p-5">
+                  <div>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream/50">Twój zestaw z konfiguratora</p>
+                    <p className="mt-1.5 text-lg font-medium tracking-[-0.02em]">
+                      {zestaw.dane.zestaw} · {zestaw.dane.kwh} kWh
+                    </p>
+                    {zestaw.dane.opcje && <p className="mt-0.5 text-sm text-cream/70">{zestaw.dane.opcje}</p>}
+                    <p className="mt-1 text-sm text-cream/70">
+                      {formatZl(zestaw.dane.cena)} · po dotacji ok. {formatZl(zestaw.dane.poDotacji)}
+                    </p>
+                  </div>
+                  <a href="#cena" className="shrink-0 text-sm text-cream/60 underline underline-offset-4 hover:text-cream">
+                    zmień
+                  </a>
+                  <input type="hidden" name="konfiguracja" value={zestaw.kod} />
+                  <input type="hidden" name="zestaw" value={`${zestaw.dane.zestaw} ${zestaw.dane.opcje ? `+ ${zestaw.dane.opcje}` : ""}`.trim()} />
+                  <input type="hidden" name="cena" value={zestaw.dane.cena} />
+                </div>
+              )}
               <div className="grid gap-7 sm:grid-cols-2">
                 <label className="block">
                   <span className="text-sm text-ink/60">Imię</span>

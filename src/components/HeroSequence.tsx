@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { type CSSProperties, type ReactNode, useCallback, useRef } from "react";
-import { PAKIETY, PHONE, PHONE_HREF, subsidyFor, zl } from "@/lib/oferta";
+import { PAKIETY, PHONE, PHONE_HREF, zl } from "@/lib/oferta";
 import { range, useScrollProgress } from "@/lib/useScrollProgress";
 
 const PHASES = [
@@ -33,7 +33,7 @@ const PHASES = [
 ];
 
 const standard = PAKIETY.find((p) => p.featured) ?? PAKIETY[0];
-const afterSubsidy = standard.price - subsidyFor(standard.price, standard.kwh);
+const afterSubsidy = standard.price - standard.subsidy;
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 

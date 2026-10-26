@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Oryginały scen z Higgsfield (duże pliki) — kopia poza repo
+/narzedzia/zrodla-scen/

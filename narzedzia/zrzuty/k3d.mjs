@@ -1,0 +1,34 @@
+// Zrzuty konfiguratora 3D: node k3d.mjs <url> <prefix> [szerokość]
+import { chromium } from "playwright";
+const [url, prefix = "k3d", w = "1440"] = process.argv.slice(2);
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: Number(w), height: 900 } });
+page.on("pageerror", (e) => console.log("PAGEERROR", e.message));
+page.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE", m.text().slice(0, 200)); });
+await page.goto(url, { waitUntil: "networkidle" });
+await page.waitForTimeout(1200);
+await page.screenshot({ path: `${prefix}-0-intro.png` });
+await page.locator('button:has-text("Zacznij")').click();
+await page.waitForTimeout(2200);
+// krok 1: wpisz moc paneli
+await page.locator('input[placeholder="np. 8"]').fill("8");
+await page.waitForTimeout(2200);
+await page.screenshot({ path: `${prefix}-1-dom.png` });
+const dalej = () => page.locator('footer button:has-text("Dalej"), footer button:has-text("Pokaż zestaw")').first().click();
+await dalej(); await page.waitForTimeout(2600);
+await page.screenshot({ path: `${prefix}-2-marka-deye.png` });
+await page.locator('aside button:has-text("FoxESS")').click(); await page.waitForTimeout(1600);
+await page.screenshot({ path: `${prefix}-2-marka-fox.png` });
+await page.locator('aside button:has-text("Deye")').click(); await page.waitForTimeout(600);
+await dalej(); await page.waitForTimeout(1200);
+await page.locator('aside button:has-text("Max")').click(); await page.waitForTimeout(1600);
+await page.screenshot({ path: `${prefix}-3-wielkosc-L.png` });
+await dalej(); await page.waitForTimeout(2200);
+await page.locator('aside button[aria-label="Podłączenie agregatu"]').click(); await page.waitForTimeout(400);
+await page.locator('aside button[aria-label="Ładowarka do samochodu 22 kW"]').click(); await page.waitForTimeout(400);
+await page.locator('aside button[aria-label="Cały dom na zasilaniu awaryjnym"]').click(); await page.waitForTimeout(1800);
+await page.screenshot({ path: `${prefix}-4-dodatki.png` });
+await dalej(); await page.waitForTimeout(3200);
+await page.screenshot({ path: `${prefix}-5-noc.png` });
+console.log("ok");
+await browser.close();

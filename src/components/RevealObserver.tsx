@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 
-// Jeden obserwator dla całej strony: elementy z [data-reveal] dostają data-in, gdy wjadą w kadr
+// Jeden obserwator dla całej strony: elementy z [data-reveal] dostają data-in, gdy wjadą w kadr.
+// Obserwuje też elementy dodawane później (np. kolejne kroki kreatora na /konfigurator).
 export function RevealObserver() {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-in])");
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -17,8 +17,26 @@ export function RevealObserver() {
       },
       { rootMargin: "0px 0px -12% 0px", threshold: 0.05 },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const obserwuj = (root: ParentNode) => {
+      root.querySelectorAll<HTMLElement>("[data-reveal]:not([data-in])").forEach((el) => io.observe(el));
+    };
+    obserwuj(document);
+
+    const mo = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const n of m.addedNodes) {
+          if (!(n instanceof HTMLElement)) continue;
+          if (n.matches("[data-reveal]:not([data-in])")) io.observe(n);
+          obserwuj(n);
+        }
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
   }, []);
 
   return null;

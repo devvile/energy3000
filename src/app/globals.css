@@ -257,3 +257,35 @@ html {
     animation: none !important;
   }
 }
+
+/* Kreator krok po kroku (/konfigurator): wejście panelu kroku */
+@keyframes krok-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+.krok-in {
+  animation: krok-in 0.9s var(--ease-out-expo) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .krok-in { animation: none !important; }
+}
+
+/* Konfigurator 3D: przepływ prądu po scenie */
+.przeplyw path {
+  fill: none;
+  stroke: var(--sun);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 16 22;
+  animation: przeplyw 1.1s linear infinite;
+}
+
+@keyframes przeplyw {
+  to { stroke-dashoffset: -38; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .przeplyw path { animation: none !important; }
+}

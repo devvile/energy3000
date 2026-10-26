@@ -1,5 +1,8 @@
-// Wszystkie dane, które będziemy podmieniać (cena, telefon, raty, firma), są w tym jednym pliku.
-// ⚠️ Wartości oznaczone PROPOZYCJA to założenia robocze — do podmiany po ofercie z hurtowni i umowie z bankiem.
+// Dane firmy, kontakt i parametry dotacji używane w wielu miejscach strony.
+// Ceny zestawów i opcji są w JEDNYM miejscu: `@/lib/konfigurator/dane.ts` (ceny zamrożone 2026-10-26) — tu tylko je czytamy.
+// ⚠️ Wartości oznaczone PROPOZYCJA to założenia robocze — do podmiany.
+
+import { zestawyLinii, type RozmiarId } from "@/lib/konfigurator";
 
 export const BRAND = "E3000";
 
@@ -9,8 +12,8 @@ export const EMAIL = "biuro@energy3000.pl"; // po aliasie w Google Workspace →
 export const HOURS = "pn–pt 8:00–20:00, sob 9:00–14:00"; // PROPOZYCJA
 export const REGION = "Kielce + 100 km";
 
-// Program „Mój Prąd — magazyny energii” (PME2): 30% kosztów, max 800 zł/kWh,
-// max 16 000 zł (net-billing) albo 8 000 zł (net-metering).
+// Program „Mój Prąd — magazyny energii” (PME2): 30% kosztu magazynu z montażem (falownik i EMS nie są kosztem
+// kwalifikowanym), max 800 zł/kWh, max 16 000 zł (net-billing) albo 8 000 zł (net-metering).
 export const SUBSIDY = {
   share: 0.3,
   perKwh: 800,
@@ -22,32 +25,28 @@ export const SUBSIDY = {
   payoutMonths: "4–7",
 };
 
-export const subsidyFor = (price: number, kwh: number, cap = SUBSIDY.capNetBilling) =>
-  Math.round(Math.min(price * SUBSIDY.share, kwh * SUBSIDY.perKwh, cap));
-
-// Raty — PROPOZYCJA: 0% na 60 miesięcy (Santander deklaruje 0% na 2–60 mies.; koszt po naszej stronie nieznany)
-export const INSTALLMENTS = {
-  months: 60,
-  rate: "0%",
-  note: "Przykład orientacyjny: raty 0% na 60 miesięcy, finansowanie we współpracy z bankiem. Ostateczne warunki, RRSO i przykład reprezentatywny przedstawimy w ofercie.",
-};
-
-export const monthlyFor = (price: number) => Math.ceil(price / INSTALLMENTS.months);
-
 export type Pakiet = {
-  id: string;
+  id: RozmiarId;
   name: string;
   pv: string;
   kwh: number;
-  price: number; // brutto, z montażem — PROPOZYCJA
+  price: number; // brutto, z montażem
+  subsidy: number; // szacunkowa dotacja PME2 (z konfiguratora)
   featured?: boolean;
 };
 
-export const PAKIETY: Pakiet[] = [
-  { id: "s", name: "Kompakt", pv: "do 5 kWp", kwh: 12, price: 23_900 },
-  { id: "m", name: "Standard", pv: "6–8 kWp", kwh: 16, price: 27_900, featured: true },
-  { id: "l", name: "Max", pv: "9–12 kWp", kwh: 24, price: 35_900 },
-];
+const NAZWY: Record<RozmiarId, string> = { s: "Kompakt", m: "Standard", l: "Max" };
+
+// Trzy pakiety pokazywane w hero: linia Deye (ceny jak w konfiguratorze).
+export const PAKIETY: Pakiet[] = zestawyLinii("deye").map((z) => ({
+  id: z.rozmiar,
+  name: NAZWY[z.rozmiar],
+  pv: `do ${z.pvMaxKwp} kWp`,
+  kwh: z.kwh,
+  price: z.cena,
+  subsidy: z.dotacjaSzacunek,
+  featured: z.polecany,
+}));
 
 export const COMPANY = {
   name: "MOJO Sp. z o.o.",
@@ -60,4 +59,4 @@ export const COMPANY = {
   capital: "5 000 zł",
 };
 
-export const zl = (n: number) => `${n.toLocaleString("pl-PL").replace(/ /g, " ")} zł`;
+export const zl = (n: number) => `${n.toLocaleString("pl-PL", { useGrouping: "always" }).replace(/[  ]/g, " ")} zł`;
