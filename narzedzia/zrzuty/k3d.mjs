@@ -2,7 +2,7 @@
 import { chromium } from "playwright";
 const [url, prefix = "k3d", w = "1440"] = process.argv.slice(2);
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: Number(w), height: 900 } });
+const page = await browser.newPage({ viewport: { width: Number(w), height: Number(w) < 600 ? 844 : 900 } });
 page.on("pageerror", (e) => console.log("PAGEERROR", e.message));
 page.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE", m.text().slice(0, 200)); });
 await page.goto(url, { waitUntil: "networkidle" });

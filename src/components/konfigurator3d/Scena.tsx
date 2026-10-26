@@ -116,8 +116,11 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
   // żeby przy zbliżeniu nie rosły razem ze sceną.
   useEffect(() => {
     const k = KAMERY[kamera];
-    gsap.to(kam.current, { scale: k.s, xPercent: (50 - k.fx) * k.s, yPercent: (50 - k.fy) * k.s, duration: 1.8, ease: "expo.inOut" });
-    gsap.to(etykiety.current?.children ?? [], { scale: 1 / k.s, duration: 1.8, ease: "expo.inOut" });
+    // Na telefonie scena jest wąska, więc dom byłby mały — kamera stoi bliżej (tło sceny i tak jest jednolite).
+    const blizej = window.matchMedia("(max-width: 639px)").matches ? 1.3 : 1;
+    const s = k.s * blizej;
+    gsap.to(kam.current, { scale: s, xPercent: (50 - k.fx) * s, yPercent: (50 - k.fy) * s, duration: 1.8, ease: "expo.inOut" });
+    gsap.to(etykiety.current?.children ?? [], { scale: 1 / s, duration: 1.8, ease: "expo.inOut" });
   }, [kamera]);
 
   // Noc: przenikanie tła, lekkie przyciemnienie warstw dziennych
@@ -296,8 +299,8 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
         </div>
       </div>
 
-      {/* Winieta: scena wtapia się w tło strony */}
-      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_160px_60px_#140c07]" />
+      {/* Winieta: scena wtapia się w tło strony. Na telefonie wąska, bo stała szerokość zalewałaby cały obrazek. */}
+      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_28px_6px_#140c07] sm:shadow-[inset_0_0_90px_30px_#140c07] lg:shadow-[inset_0_0_160px_60px_#140c07]" />
     </div>
   );
 }
