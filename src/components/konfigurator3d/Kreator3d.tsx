@@ -64,7 +64,7 @@ export function Kreator3d() {
   return (
     <section className="relative flex min-h-svh flex-col bg-[#140c07] text-foreground lg:h-svh lg:overflow-hidden">
       {/* Pasek górny */}
-      <header className="relative z-20 flex items-center justify-between px-5 py-4 sm:px-6">
+      <header className="relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4">
         <Link href="/" aria-label="E3000 — strona główna" className="flex items-baseline text-lg font-semibold tracking-tight">
           E<span className="font-serif text-[1.4em] font-normal italic leading-none">3000</span>
         </Link>
@@ -99,8 +99,8 @@ export function Kreator3d() {
       {/* Scena + panel */}
       <div className="relative flex flex-1 flex-col lg:min-h-0 lg:flex-row">
         <div className="relative flex items-center justify-center px-2 lg:min-h-0 lg:flex-1 lg:px-6">
-          {/* Szerokość sceny z wysokości ekranu (nagłówek + HUD ≈ 15rem), żeby cała mieściła się bez przewijania. */}
-          <div className="w-full" style={{ maxWidth: "min(100%, calc((100svh - 15rem) * 1.768))" }}>
+          {/* Szerokość sceny z wysokości ekranu (klasa .scena-ramka w globals.css), żeby krok mieścił się bez przewijania. */}
+          <div className="scena-ramka w-full">
             <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={start && krok >= 1} awaria={awaria} className="w-full" />
           </div>
 
@@ -134,7 +134,7 @@ export function Kreator3d() {
           )}
         </div>
 
-        <aside className="relative z-10 border-t border-white/10 bg-[#140c07]/80 px-5 py-6 backdrop-blur-xl sm:px-6 lg:w-[26rem] lg:overflow-y-auto lg:border-l lg:border-t-0">
+        <aside className="relative z-10 border-t border-white/10 bg-[#140c07]/80 px-5 py-4 backdrop-blur-xl sm:px-6 lg:w-[26rem] lg:py-6 lg:overflow-y-auto lg:border-l lg:border-t-0">
           <div key={krok} className={`krok-in ${start ? "" : "pointer-events-none opacity-40"}`}>
             {krok === 0 && <PanelDom k={k} />}
             {krok === 1 && <PanelMarka k={k} />}
@@ -146,26 +146,34 @@ export function Kreator3d() {
       </div>
 
       {/* HUD + nawigacja */}
-      <footer className="sticky bottom-0 z-20 border-t border-white/10 bg-[#140c07]/85 px-5 py-4 backdrop-blur-xl sm:px-6 lg:static">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+      <footer className="sticky bottom-0 z-20 border-t border-white/10 bg-[#140c07]/85 px-5 py-3 backdrop-blur-xl sm:px-6 lg:static lg:py-4">
+        {/* Na telefonie jeden wiersz: statystyki + strzałka wstecz + „Dalej”, żeby stopka nie zjadała ekranu. */}
+        <div className="flex items-center justify-between gap-3 lg:gap-10">
           <div className="min-w-0 flex-1">
             <Hud stan={stan} w={wyliczenie} />
           </div>
-          <div className="flex items-center justify-between gap-4 lg:justify-end">
+          <div className="flex shrink-0 items-center gap-2 lg:gap-4">
             <button
               type="button"
               onClick={() => idz(krok - 1)}
               disabled={!start || krok === 0}
+              aria-label="Wstecz"
               className="cta text-sm text-foreground/70 transition-colors hover:text-foreground disabled:invisible"
             >
-              <span className="cta-line">← Wstecz</span>
+              <span className="hidden lg:inline"><span className="cta-line">← Wstecz</span></span>
+              <span className="flex size-10 items-center justify-center rounded-full border border-white/20 lg:hidden" aria-hidden>
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
+                  <path d="M15 9H3M8 4 3 9l5 5" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </span>
             </button>
             {ostatni ? (
               <a
                 href="#wycena"
-                className="cta group flex items-center gap-4 rounded-full bg-sun py-1.5 pl-6 pr-1.5 text-base font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
+                className="cta group flex items-center gap-3 rounded-full bg-sun py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink lg:gap-4 lg:pl-6 lg:text-base transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
               >
-                Zamów wycenę
+                <span className="lg:hidden">Wycena</span>
+                <span className="hidden lg:inline">Zamów wycenę</span>
                 <span className="flex size-10 items-center justify-center rounded-full bg-ink text-cream transition-transform duration-500 group-hover:rotate-45">
                   <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden>
                     <path d="M4 14 14 4M6 4h8v8" stroke="currentColor" strokeWidth="2" />
@@ -177,7 +185,7 @@ export function Kreator3d() {
                 type="button"
                 disabled={!start}
                 onClick={() => idz(krok + 1)}
-                className="cta group flex items-center gap-4 rounded-full bg-cream py-1.5 pl-6 pr-1.5 text-base font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] disabled:opacity-40"
+                className="cta group flex items-center gap-3 rounded-full bg-cream py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink lg:gap-4 lg:pl-6 lg:text-base transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] disabled:opacity-40"
               >
                 {krok === KROKI.length - 2 ? "Pokaż zestaw" : "Dalej"}
                 <span className="flex size-10 items-center justify-center rounded-full bg-ink text-cream transition-transform duration-500 group-hover:translate-x-0.5">

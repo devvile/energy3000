@@ -46,7 +46,7 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors duration-300 ${
+      className={`rounded-full border px-3 py-1 text-[13px] transition-colors duration-300 lg:px-3.5 lg:py-1.5 lg:text-sm ${
         on ? "border-cream bg-cream text-ink" : "border-white/20 text-foreground/80 hover:border-white/60"
       }`}
     >
@@ -57,10 +57,11 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
 
 function Naglowek({ nr, tytul, opis }: { nr: number; tytul: string; opis?: string }) {
   return (
-    <div className="mb-5">
+    <div className="mb-3 lg:mb-5">
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">Krok {nr} z 5</p>
-      <h2 className="mt-1.5 text-2xl font-medium tracking-[-0.03em]">{tytul}</h2>
-      {opis && <p className="mt-1.5 text-sm leading-relaxed text-foreground/60">{opis}</p>}
+      <h2 className="mt-1 text-xl font-medium tracking-[-0.03em] lg:mt-1.5 lg:text-2xl">{tytul}</h2>
+      {/* Opis tylko na desktopie — na telefonie zabierał miejsce potrzebne na wybory bez przewijania. */}
+      {opis && <p className="mt-1.5 hidden text-sm leading-relaxed text-foreground/60 lg:block">{opis}</p>}
     </div>
   );
 }
@@ -85,7 +86,7 @@ export function PanelDom({ k }: { k: Konfigurator }) {
               setPv(t);
               akcje.ustawPv(t);
             }}
-            className="w-full bg-transparent py-2 text-3xl font-medium tracking-[-0.03em] text-foreground outline-none placeholder:text-foreground/25"
+            className="w-full bg-transparent py-1 text-2xl font-medium tracking-[-0.03em] text-foreground outline-none placeholder:text-foreground/25 lg:py-2 lg:text-3xl"
           />
           <span className="font-serif text-lg italic text-foreground/60">kWp</span>
         </span>
@@ -95,7 +96,7 @@ export function PanelDom({ k }: { k: Konfigurator }) {
           Do tych paneli polecamy rozmiar <strong className="text-foreground">{k.polecanyRozmiar.toUpperCase()}</strong> — dobierzemy go w kroku 3.
         </p>
       )}
-      <p className="mt-6 text-xs text-foreground/60">Falownik, który masz</p>
+      <p className="mt-3 text-xs text-foreground/60 lg:mt-6">Falownik, który masz</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {SYTUACJE.map((s) => (
           <Chip key={s.id} on={stan.sytuacja === s.id} onClick={() => akcje.ustawSytuacje(s.id)}>
@@ -103,7 +104,7 @@ export function PanelDom({ k }: { k: Konfigurator }) {
           </Chip>
         ))}
       </div>
-      <p className="mt-5 text-xs text-foreground/60">Panele zgłoszone do sieci</p>
+      <p className="mt-3 text-xs text-foreground/60 lg:mt-5">Panele zgłoszone do sieci</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {ROZLICZENIA.map((r) => (
           <Chip key={r.id} on={stan.rozliczenie === r.id} onClick={() => akcje.ustawRozliczenie(r.id)}>

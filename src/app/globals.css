@@ -289,3 +289,14 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .przeplyw path { animation: none !important; }
 }
+
+/* Konfigurator 3D: ramka sceny liczona z wysokości ekranu. Na telefonie (nagłówek + panel kroku + stopka ≈ 31rem)
+   scena maleje na niskich ekranach, żeby krok 1 mieścił się bez przewijania; na desktopie nagłówek + HUD ≈ 15rem. */
+.scena-ramka {
+  max-width: min(100%, calc((100svh - 31rem) * 1.768));
+}
+@media (min-width: 1024px) {
+  .scena-ramka {
+    max-width: min(100%, calc((100svh - 15rem) * 1.768));
+  }
+}
