@@ -157,7 +157,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
             </p>
             <div className="fade mt-8 flex flex-wrap items-center gap-4 sm:mt-12 sm:gap-6" style={delay(550)}>
               <a
-                href="#wycena"
+                href="#cena"
                 className="cta group inline-flex items-center gap-3 rounded-full bg-cream py-2 pl-2 pr-6 text-base font-medium tracking-tight text-ink shadow-[0_10px_40px_-10px_rgba(40,18,6,0.5)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] [text-shadow:none] hover:scale-[1.03] sm:text-lg"
               >
                 <span className="flex size-10 items-center justify-center rounded-full bg-sun text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45 sm:size-11">
@@ -264,7 +264,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
             {zl(standard.price)}.
           </p>
           <a
-            href="#wycena"
+            href="#cena"
             className="mt-8 inline-flex items-center gap-3 rounded-full bg-sun px-7 py-4 text-base font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03]"
           >
             Zamów bezpłatną wycenę <span aria-hidden>→</span>

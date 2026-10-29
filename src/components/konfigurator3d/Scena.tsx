@@ -28,6 +28,31 @@ const ROZMIAR_N = { s: 1, m: 2, l: 3 } as const;
 // Wersja w nazwie pliku (np. panele.v2.webp): po ponownym wycięciu warstw podbij numer i zmień nazwy plików,
 // bo Next trzyma zoptymalizowane obrazki w cache pod adresem pliku.
 const WERSJA_WARSTW = 4;
+/** Magazyn w widoku domu: warstwy z ciasną maską (narzedzia/magazyn-maska.py) — bez kawałków ściany. */
+const WERSJA_MAGAZYNU = 5;
+
+// Magazyn w widoku domu stał w modelu ok. metra przed tylną ścianą garażu. Przesuwamy go w głąb (dy, % sceny)
+// i zmniejszamy (s, od dolnej krawędzi — dalej = mniejszy); nadproże i ościeżnica bramy zasłaniają go przez OTWOR_BRAMY.
+const KOREKTA_DOM: Partial<Record<WarstwaId, { dx?: number; dy: number; s: number }>> = {
+  deye1: { dy: -2.5, s: 0.85 },
+  deye2: { dy: -4, s: 0.8 },
+  deye3: { dy: -4.3, s: 0.8 },
+  fox1: { dy: -3, s: 0.85 },
+  fox2: { dy: -3.5, s: 0.8 },
+  fox3: { dy: -2.5, s: 0.85 },
+};
+/** Wnętrze bramy garażu (% sceny): dolna krawędź nadproża i wewnętrzna krawędź prawej ościeżnicy. */
+const OTWOR_BRAMY = "polygon(59.3% 43.9%, 74.4% 48.9%, 74.4% 62%, 59.3% 62%)";
+
+/** Położenie warstwy w widoku domu z uwzględnieniem korekty magazynu. */
+export function polozenie(id: WarstwaId) {
+  const p = WARSTWY[id];
+  const k = KOREKTA_DOM[id];
+  if (!k) return p;
+  const w = p.w * k.s;
+  const h = p.h * k.s;
+  return { x: p.x + (p.w - w) / 2 + (k.dx ?? 0), y: p.y + (p.h - h) + k.dy, w, h };
+}
 
 /** Które warstwy są widoczne i jak podpisane — czysta funkcja stanu. */
 export function widoczne(stan: Stan, w: Wyliczenie, pokazMagazyn: boolean, noc = false): Partial<Record<WarstwaId, string>> {
@@ -182,24 +207,32 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
           {/* Warstwy sprzętu */}
           <div ref={warstwyRef} className="absolute inset-0">
             {(Object.keys(WARSTWY) as WarstwaId[]).map((id) => {
-              const p = WARSTWY[id];
+              const p = polozenie(id);
+              const magazyn = id in KOREKTA_DOM;
               return (
-                <div
-                  key={id}
-                  ref={(el) => {
-                    if (el) els.current[id] = el;
-                  }}
-                  className="absolute opacity-0"
-                  style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.w}%`, height: `${p.h}%` }}
-                >
-                  <div className="relative size-full">
-                    <Image src={`/img/scena/${id}.v${WERSJA_WARSTW}.webp`} alt="" fill sizes="60vw" className="object-fill" />
-                  </div>
+                <div key={id} className="absolute inset-0" style={magazyn ? { clipPath: OTWOR_BRAMY } : undefined}>
                   <div
-                    data-glow
-                    className="pointer-events-none absolute left-1/2 top-1/2 size-[140%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
-                    style={{ background: "radial-gradient(circle, rgba(255,159,69,0.75) 0%, rgba(255,159,69,0) 65%)" }}
-                  />
+                    ref={(el) => {
+                      if (el) els.current[id] = el;
+                    }}
+                    className="absolute opacity-0"
+                    style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.w}%`, height: `${p.h}%` }}
+                  >
+                    <div className="relative size-full">
+                      <Image
+                        src={`/img/scena/${id}.v${magazyn ? WERSJA_MAGAZYNU : WERSJA_WARSTW}.webp`}
+                        alt=""
+                        fill
+                        sizes="60vw"
+                        className="object-fill"
+                      />
+                    </div>
+                    <div
+                      data-glow
+                      className="pointer-events-none absolute left-1/2 top-1/2 size-[140%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
+                      style={{ background: "radial-gradient(circle, rgba(255,159,69,0.75) 0%, rgba(255,159,69,0) 65%)" }}
+                    />
+                  </div>
                 </div>
               );
             })}
@@ -217,19 +250,19 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
               </filter>
             </defs>
             <g className={`przeplyw transition-opacity duration-1000 ${pokazPrzeplywDzien ? "opacity-100" : "opacity-0"}`} filter="url(#glow3d)">
-              <path d="M 900 250 C 1120 300, 1260 420, 1345 540" />
+              <path d="M 900 250 C 1120 300, 1260 400, 1345 510" />
             </g>
             <g className={`przeplyw transition-opacity duration-1000 ${pokazPrzeplywNoc ? "opacity-100" : "opacity-0"}`} filter="url(#glow3d)">
-              <path d="M 1345 560 C 1180 660, 900 610, 560 530" />
-              <path d="M 1345 560 C 1180 560, 980 500, 830 440" />
-              {(vis.agregat || vis["agregat-noc"]) && <path d="M 1660 600 C 1560 590, 1460 575, 1385 565" />}
+              <path d="M 1345 530 C 1180 640, 900 610, 560 530" />
+              <path d="M 1345 530 C 1180 540, 980 490, 830 440" />
+              {(vis.agregat || vis["agregat-noc"]) && <path d="M 1660 600 C 1560 585, 1460 560, 1385 535" />}
             </g>
           </svg>
 
           {/* Podpisy przy sprzęcie (origin na dole, w punkcie kotwicy) */}
           <div ref={etykiety} className="absolute inset-0">
             {(Object.keys(WARSTWY) as WarstwaId[]).map((id) => {
-              const p = WARSTWY[id];
+              const p = polozenie(id);
               const txt = vis[id];
               const gora = id === "panele" || id === "falownik";
               // Auto stoi w garażu pod magazynem — jego podpis wisi pod autem, żeby nie nachodził na podpis magazynu.

@@ -62,6 +62,8 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
     <section
       ref={sekcja}
       id={osadzony ? "cena" : undefined}
+      // Sekcja ma własny odstęp na pływający nagłówek, więc znosimy globalne scroll-padding-top (5rem) przy skoku do #cena.
+      style={osadzony ? { scrollMarginTop: "-5rem" } : undefined}
       className="relative flex min-h-svh flex-col bg-[#140c07] text-foreground lg:h-svh lg:overflow-hidden"
     >
       {/* Pasek górny */}

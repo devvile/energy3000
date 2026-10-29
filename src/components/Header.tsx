@@ -62,12 +62,13 @@ export function Header() {
             <a href={PHONE_HREF} className="hidden text-sm tabular-nums text-foreground/85 hover:text-foreground lg:block">
               {PHONE}
             </a>
-            <a
-              href="#wycena"
+            {/* „Bezpłatna wycena” prowadzi do konfiguratora (sekcja „Cena”): tam klient widzi cenę i zamawia wycenę zestawu. */}
+            <Link
+              href="/#cena"
               className="rounded-full bg-cream px-4 py-2 text-sm font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105 sm:px-5"
             >
               Bezpłatna wycena
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -82,9 +83,9 @@ export function Header() {
         <a href={PHONE_HREF} className="rounded-full border border-white/15 bg-[#140c07]/80 py-3.5 text-center text-sm font-medium backdrop-blur-xl">
           Zadzwoń
         </a>
-        <a href="#wycena" className="rounded-full bg-sun py-3.5 text-center text-sm font-medium text-ink">
+        <Link href="/#cena" className="rounded-full bg-sun py-3.5 text-center text-sm font-medium text-ink">
           Bezpłatna wycena
-        </a>
+        </Link>
       </div>
     </>
   );
