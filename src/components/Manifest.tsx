@@ -28,10 +28,10 @@ export function Manifest() {
     <section ref={section} className="relative h-[180svh] bg-[#140c07]">
       <div className="sticky top-0 flex h-svh items-center px-5 sm:px-8">
         <div className="mx-auto w-full max-w-6xl">
-          <h2 className="max-w-4xl text-[clamp(2.4rem,5.6vw,5.6rem)] font-medium leading-[0.98] tracking-[-0.05em]">
+          <h2 className="max-w-4xl text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
             Magazyn zatrzymuje słońce na <em className="font-serif font-normal italic text-sun">wieczór.</em>
           </h2>
-          <p className="mt-8 max-w-3xl text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] tracking-[-0.02em] sm:mt-10">
+          <p className="mt-8 max-w-5xl text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] tracking-[-0.02em] sm:mt-10">
             {words.map((w, i) => (
               <span key={i}>
                 <span data-word style={{ opacity: 0.2 }} className="transition-opacity duration-200">

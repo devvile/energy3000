@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#0e0905] px-5 pb-28 pt-20 text-foreground sm:px-8 md:pb-10">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 border-b border-white/10 pb-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 pb-14 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <p className="max-w-sm text-2xl font-medium leading-snug tracking-[-0.03em]">
               Magazyny energii do paneli, które już masz. Dobór, montaż i pomoc przy dotacji.
@@ -14,7 +14,7 @@ export function Footer() {
             <p className="mt-4 text-sm text-foreground/50">{REGION}</p>
           </div>
           <div className="space-y-2 text-sm">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/40">Kontakt</p>
+            <p className="text-sm text-foreground/50">Kontakt</p>
             <a href={PHONE_HREF} className="block text-lg hover:text-sun">
               {PHONE}
             </a>
@@ -24,7 +24,7 @@ export function Footer() {
             <p className="text-foreground/50">{HOURS}</p>
           </div>
           <div className="space-y-2 text-sm">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/40">Na skróty</p>
+            <p className="text-sm text-foreground/50">Na skróty</p>
             {[
               ["#jak-dziala", "Jak to działa"],
               ["#cena", "Cena"],
@@ -48,7 +48,7 @@ export function Footer() {
           E<span className="font-serif font-normal italic">3000</span>
         </p>
 
-        <div className="flex flex-col gap-3 border-t border-white/10 pt-6 text-xs leading-relaxed text-foreground/40 md:flex-row md:justify-between">
+        <div className="flex flex-col gap-3 pt-6 text-xs leading-relaxed text-foreground/40 md:flex-row md:justify-between">
           <p>
             {BRAND} to marka {COMPANY.name}, {COMPANY.address}. {COMPANY.plant}. KRS {COMPANY.krs}, {COMPANY.court}. NIP{" "}
             {COMPANY.nip}, REGON {COMPANY.regon}, kapitał zakładowy {COMPANY.capital}.

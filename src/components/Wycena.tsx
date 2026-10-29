@@ -37,13 +37,10 @@ export function Wycena() {
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:gap-24">
         <div className="flex flex-col justify-between gap-10">
           <div>
-            <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/60">
-              <span className="h-px w-8 bg-ink/50" /> Bezpłatna wycena
-            </p>
             <Words
               text={"Oddzwonimy\nw pół godziny."}
               accent="godziny."
-              className="text-[clamp(2.6rem,5.6vw,5.6rem)] font-medium leading-[0.95] tracking-[-0.05em]"
+              className="text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]"
             />
             <p data-reveal className="mt-8 max-w-md text-lg leading-relaxed text-ink/75">
               Zostaw numer. W jednej rozmowie dowiesz się, ile kosztuje magazyn do Twoich paneli, ile dostaniesz dotacji
@@ -52,7 +49,7 @@ export function Wycena() {
           </div>
 
           <div data-reveal className="space-y-2">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink/60">Wolisz zadzwonić?</p>
+            <p className="text-base text-ink/70">Wolisz zadzwonić?</p>
             <a href={PHONE_HREF} className="cta block w-fit text-[clamp(2rem,4vw,3.4rem)] font-medium tracking-[-0.04em]">
               <span className="cta-line">{PHONE}</span>
             </a>
@@ -77,7 +74,7 @@ export function Wycena() {
               {zestaw && zestaw.dane.sytuacja !== "brak-pv" && (
                 <div className="flex items-start justify-between gap-4 rounded-2xl bg-ink p-4 text-cream sm:p-5">
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream/50">Twój zestaw z konfiguratora</p>
+                    <p className="text-sm text-cream/60">Twój zestaw z konfiguratora</p>
                     <p className="mt-1.5 text-lg font-medium tracking-[-0.02em]">
                       {zestaw.dane.zestaw} · {zestaw.dane.kwh} kWh
                     </p>

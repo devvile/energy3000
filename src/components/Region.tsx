@@ -17,7 +17,7 @@ export function Region() {
 
   return (
     <section id="o-nas" className="relative bg-[#140c07]">
-      <div ref={pano} className="relative h-[120svh] overflow-hidden">
+      <div ref={pano} className="relative h-[100svh] overflow-hidden">
         <div ref={layer} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.25)" }}>
           <Image
             src="/img/aerial.webp"
@@ -27,17 +27,13 @@ export function Region() {
             className="object-cover object-[60%_center]"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#140c07] via-transparent to-[#140c07]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#140c07]/60 via-transparent to-[#140c07]" />
         <div className="absolute inset-x-5 bottom-[18%] sm:inset-x-8">
           <div className="mx-auto max-w-7xl">
-            <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/70">
-              <span className="h-px w-8 bg-foreground/60" /> Kielce + 100 km
+            <Words text="Jesteśmy stąd." accent="stąd" className="text-[clamp(3rem,8vw,8rem)] font-medium leading-[0.92] tracking-[-0.05em]" />
+            <p data-reveal className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/90 sm:text-xl">
+              Montujemy u sąsiadów: Kielce i okolice do 100 km.
             </p>
-            <Words
-              text={"Jesteśmy stąd.\nMontujemy u sąsiadów."}
-              accent="stąd."
-              className="text-[clamp(2.8rem,7vw,7.5rem)] font-medium leading-[0.92] tracking-[-0.05em] [text-shadow:0_2px_40px_rgba(20,12,7,0.5)]"
-            />
           </div>
         </div>
       </div>
@@ -53,11 +49,11 @@ export function Region() {
           />
         </div>
         <div className="flex flex-col justify-center gap-8 lg:order-1">
-          <p data-reveal className="text-[clamp(1.5rem,2.6vw,2.2rem)] font-medium leading-[1.2] tracking-[-0.03em]">
+          <p data-reveal className="text-[clamp(1.3rem,1.9vw,1.6rem)] font-medium leading-[1.3] tracking-[-0.03em]">
             E3000 to marka firmy produkcyjnej z&nbsp;Bilczy pod Kielcami. Magazyny montuje elektryk z&nbsp;uprawnieniami
             i&nbsp;ubezpieczeniem, też stąd.
           </p>
-          <ul className="space-y-4 border-t border-white/10 pt-8 text-base text-foreground/75">
+          <ul className="space-y-4 text-base text-foreground/80">
             {[
               "Od pierwszego telefonu do wypłaty dotacji rozmawiasz z jedną osobą",
               "Przed montażem elektryk przyjeżdża obejrzeć instalację",

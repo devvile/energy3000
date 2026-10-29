@@ -9,7 +9,6 @@ const PHASES = [
   {
     from: 0.16,
     to: 0.4,
-    kicker: "Przed południem",
     title: "Panele dają więcej prądu, niż zużywa dom.",
     body: "Zamiast oddawać nadwyżkę do sieci za grosze, ładujesz nią magazyn.",
     flow: "Panele → magazyn",
@@ -17,7 +16,6 @@ const PHASES = [
   {
     from: 0.4,
     to: 0.64,
-    kicker: "Wieczór",
     title: "Słońce zachodzi, a magazyn jest pełny.",
     body: "Wracasz do domu, gotujesz, pierzesz, zapalasz światło. Prąd z południa już na Ciebie czeka.",
     flow: "Magazyn pełny",
@@ -25,7 +23,6 @@ const PHASES = [
   {
     from: 0.64,
     to: 0.84,
-    kicker: "Noc",
     title: "Dom działa na prądzie z dnia.",
     body: "A gdy w okolicy wyłączą prąd, lodówka, piec i internet działają dalej.",
     flow: "Magazyn → dom",
@@ -38,7 +35,7 @@ const afterSubsidy = standard.price - standard.subsidy;
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 // Hero przypięty do ekranu: przewijanie odtwarza dzień → zachód → noc, magazyn ładuje się i oddaje prąd.
-// Kolejne sekcje pojawiają się dopiero po obejrzeniu całej sekwencji.
+// Kolejne sekcje pojawiają się dopiero po obejrzeniu całej sekwencji (od 29.10 krótszej: 380svh zamiast 520svh).
 export function HeroSequence({ facts }: { facts: { label: string; value: ReactNode }[] }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -117,7 +114,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
   const img = "object-cover object-[72%_center] md:object-center";
 
   return (
-    <section ref={section} className="relative h-[520svh] bg-[#140c07] text-foreground">
+    <section ref={section} className="relative h-[380svh] bg-[#140c07] text-foreground">
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* Kadry: dzień, zachód, noc — ten sam dom */}
         <div ref={stage} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.1)" }}>
@@ -137,8 +134,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
         {/* 1. Hero */}
         <div ref={intro} className="absolute inset-0 flex flex-col will-change-transform">
           <div className="flex flex-1 flex-col justify-end px-5 pb-8 pt-28 sm:px-8 md:justify-center md:pb-28 [text-shadow:0_1px_24px_rgba(20,12,7,0.35)]">
-            <p className="fade mb-5 flex items-center gap-3 text-sm font-medium text-foreground/90 sm:mb-8" style={delay(100)}>
-              <span className="h-px w-8 bg-foreground/60" />
+            <p className="fade mb-5 text-base font-medium text-foreground/90 sm:mb-8" style={delay(100)}>
               Magazyn energii do paneli, które już masz
             </p>
             <h1 className="text-[clamp(3.4rem,7.4vw,8.5rem)] font-medium leading-[0.9] tracking-[-0.05em]">
@@ -185,10 +181,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
         </div>
 
         {/* Podpowiedź: przewiń */}
-        <div ref={hint} className="fade absolute right-5 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-3 sm:right-8 md:flex" style={delay(900)}>
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-foreground/70 [writing-mode:vertical-rl]">
-            Przewiń w dół
-          </span>
+        <div ref={hint} aria-hidden className="fade absolute right-5 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-3 sm:right-8 md:flex" style={delay(900)}>
           <span className="relative h-16 w-px overflow-hidden bg-white/20">
             <span className="scroll-cue absolute inset-x-0 top-0 h-6 bg-foreground" />
           </span>
@@ -197,13 +190,13 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
         {/* 2. Zegar, wskaźnik magazynu, pasek postępu */}
         <div ref={hud} className="pointer-events-none absolute inset-0" style={{ opacity: 0 }}>
           <div className="absolute left-5 top-24 sm:left-8 sm:top-28">
-            <span ref={clock} className="font-mono text-[clamp(2.4rem,6vw,5rem)] font-light tabular-nums tracking-tight text-foreground/95">
+            <span ref={clock} className="text-[clamp(2.4rem,6vw,5rem)] font-light tabular-nums tracking-[-0.03em] text-foreground/95">
               09:30
             </span>
           </div>
           <div className="absolute right-5 top-24 flex items-end gap-4 sm:right-8 sm:top-28">
             <div className="text-right">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60">Magazyn</p>
+              <p className="text-sm text-foreground/70">Magazyn</p>
               <p className="mt-1 text-4xl font-medium tabular-nums tracking-tight sm:text-5xl">
                 <span ref={pct}>18</span>
                 <span className="font-serif text-2xl italic text-led sm:text-3xl">%</span>
@@ -226,21 +219,17 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
         </div>
 
         {/* 3. Podpisy faz */}
-        <div className="pointer-events-none absolute inset-x-5 bottom-24 sm:inset-x-8 md:bottom-auto md:top-1/2 md:max-w-xl md:-translate-y-1/2">
+        <div className="pointer-events-none absolute inset-x-5 bottom-24 sm:inset-x-8 md:bottom-auto md:top-1/2 md:max-w-2xl md:-translate-y-1/2">
           <div className="relative min-h-[15rem]">
             {PHASES.map((ph, i) => (
               <div
-                key={ph.kicker}
+                key={ph.title}
                 ref={(el) => {
                   captions.current[i] = el;
                 }}
-                className="absolute inset-x-0 bottom-0 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-auto md:top-0"
+                className="absolute inset-x-0 bottom-0 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none md:bottom-auto md:top-0"
                 style={{ opacity: 0, transform: "translateY(32px)" }}
               >
-                <p className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-sun">
-                  <span className="h-px w-8 bg-sun" />
-                  {ph.kicker}
-                </p>
                 <h2 className="text-[clamp(2rem,4.4vw,3.8rem)] font-medium leading-[1] tracking-[-0.04em]">{ph.title}</h2>
                 <p className="mt-5 max-w-md text-base leading-relaxed text-foreground/85 sm:text-lg">{ph.body}</p>
               </div>

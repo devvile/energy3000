@@ -22,7 +22,7 @@ export function Marquee() {
   );
 
   return (
-    <div className="relative overflow-hidden border-y border-ink/10 bg-cream py-6 text-ink sm:py-8">
+    <div className="relative overflow-hidden bg-cream py-6 text-ink sm:py-8">
       <div className="marquee flex w-max">
         {row()}
         {row(true)}
