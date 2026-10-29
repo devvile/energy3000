@@ -22,6 +22,22 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
   const [najdalej, setNajdalej] = useState(0);
   const [awaria, setAwaria] = useState(false);
   const sekcja = useRef<HTMLElement>(null);
+  // Telefon/tablet: stopka z „Dalej” przykleja się do dołu ekranu dopiero, gdy konfigurator wypełnia ekran.
+  // Zwykłe sticky przyklejało ją, gdy tylko górna krawędź sekcji wjechała w kadr — pasek wisiał nad poprzednią sekcją.
+  const [przyklej, setPrzyklej] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const r = sekcja.current?.getBoundingClientRect();
+      setPrzyklej(!!r && r.top <= 1 && r.bottom > window.innerHeight);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
   const ostatni = krok === KROKI.length - 1;
   // Bez paneli magazyn nie ma z czego się ładować — zamiast dalszych kroków karta z wyjaśnieniem i kontaktem (PanelDom).
   const bezPv = stan.sytuacja === "brak-pv";
@@ -73,15 +89,15 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
         className={`relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4 ${osadzony ? "pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.25rem]" : ""}`}
       >
         {osadzony ? (
-          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50">
-            <span className="h-px w-8 bg-foreground/40" /> Cena
-          </p>
+          <h2 className="text-xl font-medium tracking-[-0.03em] lg:text-2xl">
+            Złóż swój zestaw<span className="hidden text-foreground/55 xl:inline"> — cenę widzisz od razu</span>
+          </h2>
         ) : (
           <Link href="/" aria-label="E3000 — strona główna" className="flex items-baseline text-lg font-semibold tracking-tight">
             E<span className="font-serif text-[1.4em] font-normal italic leading-none">3000</span>
           </Link>
         )}
-        <ol className="hidden items-center gap-2 md:flex">
+        <ol className={`hidden items-center gap-2 md:flex ${osadzony ? "ml-auto" : ""}`}>
           {KROKI.map((n, i) => {
             const aktywny = i === krok;
             const dostepny = i <= najdalej && (!bezPv || i === 0);
@@ -104,9 +120,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
             );
           })}
         </ol>
-        {osadzony ? (
-          <span className="hidden w-[4.5rem] md:block" aria-hidden />
-        ) : (
+        {osadzony ? null : (
           <a href={PHONE_HREF} className="text-sm tabular-nums text-foreground/80 hover:text-foreground">
             {PHONE}
           </a>
@@ -135,7 +149,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
       </div>
 
       {/* HUD + nawigacja */}
-      <footer className="sticky bottom-0 z-20 border-t border-white/10 bg-[#140c07]/85 px-5 py-3 backdrop-blur-xl sm:px-6 lg:static lg:py-4">
+      <footer className={`${przyklej ? "sticky" : "relative"} bottom-0 z-20 border-t border-white/10 bg-[#140c07]/85 px-5 py-3 backdrop-blur-xl sm:px-6 lg:static lg:py-4`}>
         {/* Na telefonie jeden wiersz: statystyki + strzałka wstecz + „Dalej”, żeby stopka nie zjadała ekranu. */}
         <div className="flex items-center justify-between gap-3 lg:gap-10">
           <div className="min-w-0 flex-1">

@@ -4,9 +4,10 @@ import { useCallback, useRef } from "react";
 import { range, useScrollProgress } from "@/lib/useScrollProgress";
 
 const TEXT =
-  "Najwięcej prądu panele dają w południe, a wtedy w domu zwykle nikogo nie ma. Nadwyżka idzie do sieci za grosze, a wieczorem kupujesz prąd z powrotem, dużo drożej. Magazyn zatrzymuje słońce na wieczór.";
+  "Najwięcej prądu panele dają w południe, a wtedy w domu zwykle nikogo nie ma. Nadwyżka idzie do sieci za grosze, a wieczorem kupujesz prąd z powrotem, dużo drożej.";
 
-// Manifest: słowa rozjaśniają się jedno po drugim w rytm przewijania
+// Manifest: krótki nagłówek z puentą, pod nim wyjaśnienie, którego słowa rozjaśniają się w rytm przewijania.
+// (Do 29.10 całe 33 słowa były ustawione jak nagłówek — 6 wierszy na komputerze, 9 na telefonie.)
 export function Manifest() {
   const section = useRef<HTMLElement>(null);
   const words = TEXT.split(" ");
@@ -16,35 +17,28 @@ export function Manifest() {
     if (!spans) return;
     const n = spans.length;
     spans.forEach((s, i) => {
-      const t = range(p, (i / n) * 0.8, (i / n) * 0.8 + 0.12);
-      s.style.opacity = String(0.14 + t * 0.86);
+      const t = range(p, (i / n) * 0.7, (i / n) * 0.7 + 0.12);
+      s.style.opacity = String(0.2 + t * 0.8);
     });
   }, []);
 
   useScrollProgress(section, onProgress);
 
   return (
-    <section ref={section} className="relative h-[220svh] bg-[#140c07]">
+    <section ref={section} className="relative h-[180svh] bg-[#140c07]">
       <div className="sticky top-0 flex h-svh items-center px-5 sm:px-8">
         <div className="mx-auto w-full max-w-6xl">
-          <p className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50">
-            <span className="h-px w-8 bg-foreground/40" /> Po co magazyn
-          </p>
-          <p className="text-[clamp(1.9rem,4.6vw,4.6rem)] font-medium leading-[1.08] tracking-[-0.04em]">
-            {words.map((w, i) => {
-              const accent = /słońce|wieczór\.?/.test(w) && i > words.length - 5;
-              return (
-                <span key={i}>
-                  <span
-                    data-word
-                    style={{ opacity: 0.14 }}
-                    className={`transition-opacity duration-200 ${accent ? "font-serif font-normal italic text-sun" : ""}`}
-                  >
-                    {w}
-                  </span>{" "}
-                </span>
-              );
-            })}
+          <h2 className="max-w-4xl text-[clamp(2.4rem,5.6vw,5.6rem)] font-medium leading-[0.98] tracking-[-0.05em]">
+            Magazyn zatrzymuje słońce na <em className="font-serif font-normal italic text-sun">wieczór.</em>
+          </h2>
+          <p className="mt-8 max-w-3xl text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] tracking-[-0.02em] sm:mt-10">
+            {words.map((w, i) => (
+              <span key={i}>
+                <span data-word style={{ opacity: 0.2 }} className="transition-opacity duration-200">
+                  {w}
+                </span>{" "}
+              </span>
+            ))}
           </p>
         </div>
       </div>
