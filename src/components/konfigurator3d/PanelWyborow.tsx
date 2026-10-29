@@ -59,7 +59,7 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
 function Naglowek({ nr, tytul, opis }: { nr: number; tytul: string; opis?: string }) {
   return (
     <div className="mb-3 lg:mb-5">
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">Krok {nr} z 5</p>
+      <p className="text-xs text-foreground/60">Krok {nr} z 5</p>
       <h2 className="mt-1 text-xl font-medium tracking-[-0.03em] lg:mt-1.5 lg:text-2xl">{tytul}</h2>
       {/* Opis tylko na desktopie — na telefonie zabierał miejsce potrzebne na wybory bez przewijania. */}
       {opis && <p className="mt-1.5 hidden text-sm leading-relaxed text-foreground/60 lg:block">{opis}</p>}
@@ -105,6 +105,9 @@ export function PanelDom({ k }: { k: Konfigurator }) {
           </Chip>
         ))}
       </div>
+      {stan.sytuacja !== "brak-pv" && (
+        <LinkPoradnik href="/magazyn-energii-do-istniejacej-fotowoltaiki">Co zrobimy z Twoim falownikiem?</LinkPoradnik>
+      )}
       {stan.sytuacja === "brak-pv" ? (
         <div className="krok-in mt-4 rounded-2xl border border-sun/40 bg-sun/10 p-4 lg:mt-6 lg:p-5">
           <p className="text-base font-medium tracking-[-0.02em] lg:text-lg">{BEZ_PV.tytul}</p>
@@ -146,7 +149,7 @@ export function PanelMarka({ k }: { k: Konfigurator }) {
                 on ? "border-sun/60 bg-cream text-ink" : "border-white/15 bg-white/[0.04] hover:border-white/40"
               }`}
             >
-              <p className={`font-mono text-[10px] uppercase tracking-[0.2em] ${on ? "text-ink/50" : "text-foreground/50"}`}>{l.haslo}</p>
+              <p className={`text-xs font-medium ${on ? "text-ink/60" : "text-foreground/60"}`}>{l.haslo}</p>
               <p className="mt-1 text-2xl font-medium tracking-[-0.03em]">{l.nazwa}</p>
               <p className={`mt-1.5 text-xs leading-relaxed ${on ? "text-ink/70" : "text-foreground/60"}`}>{l.dlaKogo}</p>
               <ul className={`mt-2 space-y-0.5 text-xs ${on ? "text-ink/75" : "text-foreground/65"}`}>
@@ -158,7 +161,17 @@ export function PanelMarka({ k }: { k: Konfigurator }) {
           );
         })}
       </div>
+      <LinkPoradnik href="/magazyn-energii-deye-czy-foxess">Porównaj Deye i FoxESS dokładniej</LinkPoradnik>
     </div>
+  );
+}
+
+/** Link do poradnika w nowej karcie — konfiguracja w tej karcie zostaje nietknięta. */
+function LinkPoradnik({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a href={href} target="_blank" rel="noopener" className="mt-3 inline-block text-xs text-foreground/70 underline underline-offset-4 hover:text-sun lg:text-sm">
+      {children} ↗
+    </a>
   );
 }
 
@@ -221,7 +234,7 @@ export function PanelWielkosc({ k }: { k: Konfigurator }) {
                   </span>
                   <span className="shrink-0 text-base font-medium">{formatZl(z.cena)}</span>
                 </span>
-                <span className={`mt-0.5 block font-mono text-[10px] uppercase tracking-[0.2em] ${on ? "text-ink/55" : "text-foreground/50"}`}>
+                <span className={`mt-0.5 block text-xs ${on ? "text-ink/60" : "text-foreground/60"}`}>
                   {ROZMIAR_OPIS[z.rozmiar]} · {MODULY[z.rozmiar]} {MODULY[z.rozmiar] === 1 ? "moduł" : "moduły"} · PV do {formatKwh(z.pvMaxKwp)} kWp
                 </span>
                 <span className={`mt-2 block text-xs leading-relaxed ${on ? "text-ink/65" : "text-foreground/60"}`}>{z.dom}</span>
@@ -229,7 +242,7 @@ export function PanelWielkosc({ k }: { k: Konfigurator }) {
 
               <span className="flex shrink-0 flex-col items-end justify-between">
                 <Moduly n={MODULY[z.rozmiar]} on={on} linia={stan.linia} />
-                {polecany && <span className="mt-2 rounded-full bg-sun px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-ink">polecany</span>}
+                {polecany && <span className="mt-2 rounded-full bg-sun px-2 py-0.5 text-[11px] font-medium text-ink">polecany</span>}
               </span>
             </button>
           );
@@ -247,7 +260,7 @@ export function PanelDodatki({ k }: { k: Konfigurator }) {
       <div className="space-y-5">
         {KATEGORIE.map((kat) => (
           <div key={kat.id}>
-            <p className="mb-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">{kat.nazwa}</p>
+            <p className="mb-1.5 text-xs font-medium text-foreground/60">{kat.nazwa}</p>
             <ul className="divide-y divide-white/10">
               {opcje
                 .filter((o) => o.opcja.kategoria === kat.id)

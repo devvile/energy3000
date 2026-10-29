@@ -108,7 +108,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
                   disabled={!dostepny}
                   onClick={() => idz(i)}
                   aria-current={aktywny ? "step" : undefined}
-                  className={`flex items-center gap-2 rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
+                  className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium transition-colors duration-500 ${
                     aktywny ? "bg-sun text-ink" : dostepny ? "text-foreground/70 hover:text-foreground" : "text-foreground/30"
                   }`}
                 >

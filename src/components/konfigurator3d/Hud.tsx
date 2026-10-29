@@ -67,7 +67,7 @@ export function Hud({ stan, w }: { stan: Stan; w: Wyliczenie }) {
   return (
     <dl className="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-4 sm:gap-x-6 lg:gap-x-8">
       <div>
-        <dt className="font-mono text-[9px] uppercase tracking-[0.16em] text-foreground/50 sm:text-[10px] sm:tracking-[0.2em]">Pojemność</dt>
+        <dt className="text-xs text-foreground/60">Pojemność</dt>
         <dd className="mt-0.5 text-lg font-medium tracking-[-0.03em] sm:mt-1 sm:text-2xl">
           <Licznik wartosc={w.kwh} format={(n) => formatKwh(Math.round(n * 10) / 10)} />
           <span className="ml-1 font-serif text-base italic text-foreground/60">kWh</span>
@@ -75,7 +75,7 @@ export function Hud({ stan, w }: { stan: Stan; w: Wyliczenie }) {
         <Pasek udzial={w.kwh / 40} className="mt-2 hidden sm:block" />
       </div>
       <div className="hidden sm:block">
-        <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">Prąd na noc</dt>
+        <dt className="text-xs text-foreground/60">Prąd na noc</dt>
         <dd className="mt-1 text-2xl font-medium tracking-[-0.03em]">
           <Licznik wartosc={noce} format={(n) => (Math.round(n * 10) / 10).toLocaleString("pl-PL")} />
           <span className="ml-1 font-serif text-base italic text-foreground/60">{noce === 1 ? "noc" : noce < 5 ? "noce" : "nocy"}</span>
@@ -83,7 +83,7 @@ export function Hud({ stan, w }: { stan: Stan; w: Wyliczenie }) {
         <Pasek udzial={noce / 8} className="mt-2" />
       </div>
       <div className="hidden sm:block">
-        <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">Zasilanie awaryjne</dt>
+        <dt className="text-xs text-foreground/60">Zasilanie awaryjne</dt>
         <dd className="mt-1 text-sm font-medium">{backup.nazwa}</dd>
         <div className="mt-2 flex gap-1.5">
           {[1, 2, 3].map((p) => (
@@ -95,7 +95,7 @@ export function Hud({ stan, w }: { stan: Stan; w: Wyliczenie }) {
         </div>
       </div>
       <div>
-        <dt className="font-mono text-[9px] uppercase tracking-[0.16em] text-foreground/50 sm:text-[10px] sm:tracking-[0.2em]"><span className="sm:hidden">Płacisz</span><span className="hidden sm:inline">Realnie płacisz</span></dt>
+        <dt className="text-xs text-foreground/60"><span className="sm:hidden">Płacisz</span><span className="hidden sm:inline">Realnie płacisz</span></dt>
         <dd className="mt-0.5 text-lg font-medium tracking-[-0.03em] sm:mt-1 sm:text-2xl">
           <Licznik wartosc={w.poDotacji} format={(n) => `${Math.round(n / 10) * 10}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} />
           <span className="ml-1 font-serif text-base italic text-foreground/60">zł</span>

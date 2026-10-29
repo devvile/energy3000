@@ -25,6 +25,21 @@ const KAMERY: Record<Kamera, { s: number; fx: number; fy: number }> = {
 };
 
 const ROZMIAR_N = { s: 1, m: 2, l: 3 } as const;
+
+// Kadr zbliżenia garażu. Model ustawiał sprzęt w każdym wariancie trochę w innym miejscu (środki od 36% do 45%
+// szerokości), więc zamiast przesuwać warstwy (szwy na ścianie) przesuwamy cały kadr: środek widocznego sprzętu
+// trafia zawsze w ten sam punkt ekranu. Na telefonie scena jest wąska, więc kadr jest mocniej przybliżony.
+const LINIA_PODLOGI_G = 74; // % wysokości kadru garażu: styk ściany z podłogą
+function srodekSprzetu(id: WarstwaGarazId) {
+  const p = WARSTWY_GARAZ[id];
+  const naPodlodze = p.y + p.h >= 99; // łatka sięga do dołu kadru (odbicie w posadzce) — liczymy do linii podłogi
+  return { x: p.x + p.w / 2, y: naPodlodze ? (p.y + LINIA_PODLOGI_G) / 2 : p.y + p.h / 2 };
+}
+const KADR_G = {
+  desktop: { skala: 1.1, cel: { x: 40, y: 42 } },
+  telefon: { skala: 1.45, cel: { x: 50, y: 50 } },
+};
+const przytnij = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 // Wersja w nazwie pliku (np. panele.v2.webp): po ponownym wycięciu warstw podbij numer i zmień nazwy plików,
 // bo Next trzyma zoptymalizowane obrazki w cache pod adresem pliku.
 const WERSJA_WARSTW = 4;
@@ -85,9 +100,31 @@ type Props = {
 export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, pokazMagazynDom, awaria, className = "" }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const planRef = useRef<HTMLDivElement>(null);
+  const kadrG = useRef<HTMLDivElement>(null);
   const elsG = useRef<Partial<Record<WarstwaGarazId, HTMLDivElement>>>({});
   const poprzednieG = useRef<Set<WarstwaGarazId>>(new Set());
   const visG = useMemo(() => widoczneGaraz(stan, wyliczenie, pokazMagazyn), [stan, wyliczenie, pokazMagazyn]);
+
+  // Kadr garażu: środek widocznego sprzętu (magazyn albo stary falownik) w stałym punkcie ekranu.
+  const sprzetG = (Object.keys(visG) as WarstwaGarazId[]).find((id) => id !== "g-falownik") ?? (visG["g-falownik"] ? "g-falownik" : undefined);
+  const pierwszyKadr = useRef(true);
+  useEffect(() => {
+    const el = kadrG.current;
+    if (!el) return;
+    const ustaw = (animuj: boolean) => {
+      const { skala, cel } = window.matchMedia("(max-width: 639px)").matches ? KADR_G.telefon : KADR_G.desktop;
+      const s = sprzetG ? srodekSprzetu(sprzetG) : { x: 40, y: 45 };
+      const min = 100 - 100 * skala; // przesunięcie nie może odsłonić krawędzi kadru
+      const v = { xPercent: przytnij(cel.x - skala * s.x, min, 0), yPercent: przytnij(cel.y - skala * s.y, min, 0), scale: skala, transformOrigin: "0 0" };
+      if (animuj) gsap.to(el, { ...v, duration: 1.1, ease: "expo.inOut" });
+      else gsap.set(el, v);
+    };
+    ustaw(!pierwszyKadr.current);
+    pierwszyKadr.current = false;
+    const onResize = () => ustaw(false);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [sprzetG]);
 
   // Plan garażu: pojawia się pod koniec zoomu kamery (przenikanie + lekkie dojście skali), znika razem z odjazdem.
   useEffect(() => {
@@ -270,7 +307,7 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, pokaz
                     top: `${kotwica ? kotwica.y : dol ? p.y + p.h - 3 : gora ? p.y + p.h * 0.12 : p.y - 0.5}%`,
                   }}
                 >
-                  <span className="whitespace-nowrap rounded-full border border-white/15 bg-[#140c07]/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/90 backdrop-blur-md">
+                  <span className="whitespace-nowrap rounded-full border border-white/15 bg-[#140c07]/80 px-3 py-1 text-xs font-medium text-foreground/90 backdrop-blur-md">
                     {txt}
                   </span>
                   <span className={`size-1.5 rounded-full bg-sun shadow-[0_0_12px_2px_rgba(255,159,69,0.9)] ${dol ? "mb-1" : "mt-1"}`} />
@@ -281,7 +318,8 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, pokaz
         </div>
 
         {/* Plan garażu: osobna scena ze zbliżeniem, własne warstwy magazynów */}
-        <div ref={planRef} className="pointer-events-none absolute inset-0 opacity-0 will-change-transform">
+        <div ref={planRef} className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 will-change-transform">
+          <div ref={kadrG} className="absolute inset-0 will-change-transform">
           <Image src={`/img/garaz/garaz.v${GARAZ.wersja}.webp`} alt="Tylna ściana garażu, na której staje magazyn energii" fill sizes="100vw" className="object-cover" />
           {(Object.keys(WARSTWY_GARAZ) as WarstwaGarazId[]).map((id) => {
             const p = WARSTWY_GARAZ[id];
@@ -312,15 +350,17 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, pokaz
                 className={`pointer-events-none absolute hidden -translate-x-1/2 -translate-y-full flex-col items-center transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:flex ${
                   txt ? "opacity-100" : "opacity-0"
                 }`}
-                style={{ left: `${p.x + p.w / 2}%`, top: `${p.y - 1}%` }}
+                // Sprzęt pod sufitem (Fox L, stary falownik): podpis nie wyżej niż 8% kadru, inaczej znika za krawędzią.
+                style={{ left: `${p.x + p.w / 2}%`, top: `${Math.max(p.y - 1, 8)}%` }}
               >
-                <span className="whitespace-nowrap rounded-full border border-white/15 bg-[#140c07]/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/90 backdrop-blur-md">
+                <span className="whitespace-nowrap rounded-full border border-white/15 bg-[#140c07]/80 px-3 py-1 text-xs font-medium text-foreground/90 backdrop-blur-md">
                   {txt}
                 </span>
                 <span className="mt-1 size-1.5 rounded-full bg-sun shadow-[0_0_12px_2px_rgba(255,159,69,0.9)]" />
               </div>
             );
           })}
+          </div>
         </div>
       </div>
 
