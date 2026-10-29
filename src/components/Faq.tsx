@@ -1,9 +1,16 @@
+import Link from "next/link";
 import { Words } from "./Words";
 
-export const QA: [string, string][] = [
+type Wiecej = { href: string; label: string };
+const DOTACJA: Wiecej = { href: "/dotacja-do-magazynu-energii", label: "Dotacja do magazynu energii krok po kroku" };
+const ISTNIEJACA_PV: Wiecej = { href: "/magazyn-energii-do-istniejacej-fotowoltaiki", label: "Magazyn do fotowoltaiki, którą już masz" };
+const MARKI: Wiecej = { href: "/magazyn-energii-deye-czy-foxess", label: "Deye czy FoxESS — porównanie" };
+
+export const QA: [string, string, Wiecej?][] = [
   [
     "Kiedy dostanę dotację?",
     "Po montażu. Wniosek można złożyć dopiero wtedy, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura jest zapłacona. Na przelew czeka się zwykle 4–7 miesięcy.",
+    DOTACJA,
   ],
   [
     "Czy muszę od razu zapłacić całość?",
@@ -12,6 +19,7 @@ export const QA: [string, string][] = [
   [
     "Kto może dostać dotację?",
     "Osoba prywatna, która ma fotowoltaikę podłączoną do sieci i umowę na prąd na siebie. Umowa nie może być na firmę.",
+    DOTACJA,
   ],
   [
     "Mam stare zasady rozliczeń (opusty). Czy to się opłaca?",
@@ -20,10 +28,12 @@ export const QA: [string, string][] = [
   [
     "Po co nowy falownik, skoro mam już jeden?",
     "Starsze falowniki zwykle nie współpracują z baterią. Montujemy wtedy falownik hybrydowy, który steruje i panelami, i magazynem. Wystarczy nam zdjęcie tabliczki, żeby to sprawdzić.",
+    ISTNIEJACA_PV,
   ],
   [
     "Ile trwa montaż i gdzie stoi magazyn?",
     "Zwykle jeden dzień i nikt nie wchodzi na dach. Magazyn wisi albo stoi w garażu, kotłowni czy innym pomieszczeniu gospodarczym. Jest wielkości wąskiej szafki.",
+    MARKI,
   ],
   [
     "Czy magazyn jest bezpieczny?",
@@ -44,7 +54,7 @@ export function Faq() {
           <Words text={"Najczęstsze\npytania."} accent="pytania" className="text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]" />
         </div>
         <div className="space-y-3">
-          {QA.map(([q, a]) => (
+          {QA.map(([q, a, wiecej]) => (
             <details key={q} data-reveal className="faq group rounded-2xl bg-[#ebdfcd] px-5 transition-colors duration-500 open:bg-[#e6d8c3] sm:px-7">
               <summary className="flex cursor-pointer items-center justify-between gap-6 py-5 text-lg font-medium tracking-[-0.02em] sm:py-6 sm:text-xl">
                 {q}
@@ -54,7 +64,17 @@ export function Faq() {
               </summary>
               <div className="answer">
                 <p className="overflow-hidden pr-14 text-base leading-relaxed text-ink/80 sm:text-lg">
-                  <span className="block pb-6">{a}</span>
+                  <span className="block pb-6">
+                    {a}
+                    {wiecej && (
+                      <>
+                        {" "}
+                        <Link href={wiecej.href} className="underline underline-offset-4 hover:text-sun">
+                          {wiecej.label} →
+                        </Link>
+                      </>
+                    )}
+                  </span>
                 </p>
               </div>
             </details>

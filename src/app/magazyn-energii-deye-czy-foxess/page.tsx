@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Poradnik, Tabela } from "@/components/Poradnik";
+import { OG_BAZA } from "@/lib/seo";
 import { LINIE, LINIE_IDS, W_KAZDYM_ZESTAWIE, formatKwh, formatZl, zestawyLinii } from "@/lib/konfigurator";
 
 // Opisy marek, ceny i skład zestawów — z danych konfiguratora (ceny zamrożone 26.10).
@@ -9,9 +10,10 @@ const TYTUL = "Magazyn energii Deye czy FoxESS?";
 export const metadata: Metadata = {
   title: "Magazyn energii Deye czy FoxESS? Porównanie i ceny — E3000",
   description:
-    "Porównanie magazynów energii Deye i FoxESS: dla kogo która marka, plusy i ograniczenia, ceny zestawów 12–24 kWh z falownikiem i montażem. Kielce i okolice.",
+    "Deye czy FoxESS? Dla kogo która marka, zalety i ograniczenia, ceny zestawów 12–24 kWh z falownikiem i montażem. Kielce i okolice.",
   alternates: { canonical: "/magazyn-energii-deye-czy-foxess" },
   openGraph: {
+    ...OG_BAZA,
     title: "Magazyn energii Deye czy FoxESS? — E3000",
     description: "Dla kogo która marka, plusy i ograniczenia, ceny zestawów z montażem.",
     url: "/magazyn-energii-deye-czy-foxess",

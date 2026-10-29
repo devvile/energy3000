@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Poradnik, Tabela } from "@/components/Poradnik";
+import { OG_BAZA } from "@/lib/seo";
 import { formatKwh, zestawyLinii } from "@/lib/konfigurator";
 
 // Warianty montażu wg vaulta „10 Strategia/Oferta — konfigurator zestawów Deye i FoxESS”, pkt 6.4 i 6.4a.
@@ -9,9 +10,10 @@ const TYTUL = "Magazyn energii do fotowoltaiki, którą już masz";
 export const metadata: Metadata = {
   title: "Magazyn energii do istniejącej fotowoltaiki — E3000 Kielce",
   description:
-    "Jak dołożyć magazyn energii do działającej fotowoltaiki: co zależy od falownika (zwykły, hybrydowy, mikroinwertery, SolarEdge), jak dobrać pojemność, gdzie stoi magazyn i jak wygląda montaż.",
+    "Jak dołożyć magazyn energii do działającej fotowoltaiki: co zależy od falownika, jak dobrać pojemność, gdzie stoi magazyn i jak wygląda montaż.",
   alternates: { canonical: "/magazyn-energii-do-istniejacej-fotowoltaiki" },
   openGraph: {
+    ...OG_BAZA,
     title: "Magazyn energii do istniejącej fotowoltaiki — E3000",
     description: "Co zależy od falownika, jak dobrać pojemność i jak wygląda montaż.",
     url: "/magazyn-energii-do-istniejacej-fotowoltaiki",

@@ -3,12 +3,14 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/Header";
 import { BRAND, COMPANY, EMAIL, PHONE } from "@/lib/oferta";
+import { OG_BAZA } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: `Polityka prywatności — ${BRAND}`,
   description: `Jak ${BRAND} (${COMPANY.name}) przetwarza dane osobowe z formularza kontaktowego.`,
   alternates: { canonical: "/polityka-prywatnosci" },
   openGraph: {
+    ...OG_BAZA,
     title: `Polityka prywatności — ${BRAND}`,
     description: `Jak ${BRAND} (${COMPANY.name}) przetwarza dane osobowe z formularza kontaktowego.`,
     url: "/polityka-prywatnosci",

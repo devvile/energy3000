@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Poradnik, Tabela } from "@/components/Poradnik";
+import { OG_BAZA } from "@/lib/seo";
 import { ZESTAWY } from "@/lib/konfigurator/dane";
 import { formatKwh, formatZl } from "@/lib/konfigurator";
 import { SUBSIDY } from "@/lib/oferta";
@@ -12,9 +13,10 @@ const TYTUL = "Dotacja do magazynu energii w 2026 roku";
 export const metadata: Metadata = {
   title: "Dotacja do magazynu energii 2026 (PME2, dawniej Mój Prąd) — E3000",
   description:
-    "Ile wynosi dotacja do domowego magazynu energii z programu Przydomowe Magazyny Energii (PME2), kto może ją dostać, jakie są wymagania i kiedy przychodzą pieniądze. Przykłady dla zestawów Deye i FoxESS.",
+    "Dotacja do magazynu energii 2026 (PME2): ile wynosi, kto może ją dostać, jakie są wymagania i kiedy przychodzą pieniądze. Przykłady dla Deye i FoxESS.",
   alternates: { canonical: "/dotacja-do-magazynu-energii" },
   openGraph: {
+    ...OG_BAZA,
     title: "Dotacja do magazynu energii 2026 (PME2) — E3000",
     description: "Ile wynosi dotacja do magazynu energii, kto może ją dostać i kiedy przychodzą pieniądze.",
     url: "/dotacja-do-magazynu-energii",
