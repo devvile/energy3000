@@ -1,4 +1,4 @@
-// Wygenerowane z public/img/scena/manifest.json (skrypty warstwy.py, warstwy-noc.py) — położenie warstw w % sceny; kolejność = kolejność rysowania. Nie edytuj ręcznie.
+// Wygenerowane z public/img/scena/manifest.json (skrypty warstwy.py, warstwy-noc.py, wnetrze-garazu.py) — położenie warstw w % sceny; kolejność = kolejność rysowania. Nie edytuj ręcznie.
 export const SCENA = { szerokosc: 1920, wysokosc: 1086 } as const;
 
 export type WarstwaId = "panele" | "falownik" | "agregat" | "deye1" | "deye2" | "deye3" | "fox1" | "fox2" | "fox3" | "auto" | "agregat-noc" | "auto-noc";
@@ -23,40 +23,40 @@ export const WARSTWY: Record<WarstwaId, { x: number; y: number; w: number; h: nu
     "h": 13.996
   },
   "deye1": {
-    "x": 65.885,
-    "y": 45.58,
-    "w": 8.125,
-    "h": 11.878
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "deye2": {
-    "x": 68.438,
-    "y": 46.501,
-    "w": 5.469,
-    "h": 13.72
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "deye3": {
-    "x": 67.031,
-    "y": 45.856,
-    "w": 6.875,
-    "h": 13.168
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "fox1": {
-    "x": 67.917,
-    "y": 46.777,
-    "w": 5.99,
-    "h": 10.497
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "fox2": {
-    "x": 67.188,
-    "y": 46.041,
-    "w": 6.771,
-    "h": 10.589
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "fox3": {
-    "x": 68.646,
-    "y": 46.593,
-    "w": 5.26,
-    "h": 11.602
+    "x": 59.062,
+    "y": 43.554,
+    "w": 15.573,
+    "h": 18.877
   },
   "auto": {
     "x": 59.74,

@@ -28,31 +28,19 @@ const ROZMIAR_N = { s: 1, m: 2, l: 3 } as const;
 // Wersja w nazwie pliku (np. panele.v2.webp): po ponownym wycięciu warstw podbij numer i zmień nazwy plików,
 // bo Next trzyma zoptymalizowane obrazki w cache pod adresem pliku.
 const WERSJA_WARSTW = 4;
-/** Magazyn w widoku domu: warstwy z ciasną maską (narzedzia/magazyn-maska.py) — bez kawałków ściany. */
-const WERSJA_MAGAZYNU = 5;
-
-// Magazyn w widoku domu stał w modelu ok. metra przed tylną ścianą garażu. Przesuwamy go w głąb (dy, % sceny)
-// i zmniejszamy (s, od dolnej krawędzi — dalej = mniejszy); nadproże i ościeżnica bramy zasłaniają go przez OTWOR_BRAMY.
-const KOREKTA_DOM: Partial<Record<WarstwaId, { dx?: number; dy: number; s: number }>> = {
-  deye1: { dy: -2.5, s: 0.85 },
-  deye2: { dy: -4, s: 0.8 },
-  deye3: { dy: -4.3, s: 0.8 },
-  fox1: { dy: -3, s: 0.85 },
-  fox2: { dy: -3.5, s: 0.8 },
-  fox3: { dy: -2.5, s: 0.85 },
+// Magazyn w widoku domu to całe wnętrze bramy garażu z wariantu (narzedzia/wnetrze-garazu.py): sprzęt przy ścianie,
+// razem ze ścianami i podłogą tego wariantu. Wersja 6 — wcześniejsze osobne warstwy „stały” na środku garażu.
+const WERSJA_MAGAZYNU = 6;
+const MAGAZYNY = new Set<WarstwaId>(["deye1", "deye2", "deye3", "fox1", "fox2", "fox3"]);
+/** Gdzie wisi podpis magazynu (% sceny, nad falownikiem) — warstwa obejmuje całe wnętrze garażu, więc nie z jej ramki. */
+const PODPIS_MAGAZYNU: Partial<Record<WarstwaId, { x: number; y: number }>> = {
+  deye1: { x: 62.6, y: 45.6 },
+  deye2: { x: 68.9, y: 46.6 },
+  deye3: { x: 68.9, y: 46.6 },
+  fox1: { x: 68.9, y: 46.5 },
+  fox2: { x: 68.9, y: 46.4 },
+  fox3: { x: 68.9, y: 46.4 },
 };
-/** Wnętrze bramy garażu (% sceny): dolna krawędź nadproża i wewnętrzna krawędź prawej ościeżnicy. */
-const OTWOR_BRAMY = "polygon(59.3% 43.9%, 74.4% 48.9%, 74.4% 62%, 59.3% 62%)";
-
-/** Położenie warstwy w widoku domu z uwzględnieniem korekty magazynu. */
-export function polozenie(id: WarstwaId) {
-  const p = WARSTWY[id];
-  const k = KOREKTA_DOM[id];
-  if (!k) return p;
-  const w = p.w * k.s;
-  const h = p.h * k.s;
-  return { x: p.x + (p.w - w) / 2 + (k.dx ?? 0), y: p.y + (p.h - h) + k.dy, w, h };
-}
 
 /** Które warstwy są widoczne i jak podpisane — czysta funkcja stanu. */
 export function widoczne(stan: Stan, w: Wyliczenie, pokazMagazyn: boolean, noc = false): Partial<Record<WarstwaId, string>> {
@@ -207,32 +195,33 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
           {/* Warstwy sprzętu */}
           <div ref={warstwyRef} className="absolute inset-0">
             {(Object.keys(WARSTWY) as WarstwaId[]).map((id) => {
-              const p = polozenie(id);
-              const magazyn = id in KOREKTA_DOM;
+              const p = WARSTWY[id];
               return (
-                <div key={id} className="absolute inset-0" style={magazyn ? { clipPath: OTWOR_BRAMY } : undefined}>
-                  <div
-                    ref={(el) => {
-                      if (el) els.current[id] = el;
-                    }}
-                    className="absolute opacity-0"
-                    style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.w}%`, height: `${p.h}%` }}
-                  >
-                    <div className="relative size-full">
-                      <Image
-                        src={`/img/scena/${id}.v${magazyn ? WERSJA_MAGAZYNU : WERSJA_WARSTW}.webp`}
-                        alt=""
-                        fill
-                        sizes="60vw"
-                        className="object-fill"
-                      />
-                    </div>
+                <div
+                  key={id}
+                  ref={(el) => {
+                    if (el) els.current[id] = el;
+                  }}
+                  className="absolute opacity-0"
+                  style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.w}%`, height: `${p.h}%` }}
+                >
+                  <div className="relative size-full">
+                    <Image
+                      src={`/img/scena/${id}.v${MAGAZYNY.has(id) ? WERSJA_MAGAZYNU : WERSJA_WARSTW}.webp`}
+                      alt=""
+                      fill
+                      sizes="60vw"
+                      className="object-fill"
+                    />
+                  </div>
+                  {/* Poświata przy pojawieniu — przy wnętrzu garażu byłaby na całą bramę, więc tylko dla zwykłych warstw. */}
+                  {!MAGAZYNY.has(id) && (
                     <div
                       data-glow
                       className="pointer-events-none absolute left-1/2 top-1/2 size-[140%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
                       style={{ background: "radial-gradient(circle, rgba(255,159,69,0.75) 0%, rgba(255,159,69,0) 65%)" }}
                     />
-                  </div>
+                  )}
                 </div>
               );
             })}
@@ -262,8 +251,9 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
           {/* Podpisy przy sprzęcie (origin na dole, w punkcie kotwicy) */}
           <div ref={etykiety} className="absolute inset-0">
             {(Object.keys(WARSTWY) as WarstwaId[]).map((id) => {
-              const p = polozenie(id);
+              const p = WARSTWY[id];
               const txt = vis[id];
+              const kotwica = PODPIS_MAGAZYNU[id];
               const gora = id === "panele" || id === "falownik";
               // Auto stoi w garażu pod magazynem — jego podpis wisi pod autem, żeby nie nachodził na podpis magazynu.
               const dol = id === "auto" || id === "auto-noc";
@@ -274,8 +264,8 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
                     dol ? "origin-top flex-col-reverse" : "-translate-y-full origin-bottom flex-col"
                   } ${txt ? "opacity-100" : "opacity-0"}`}
                   style={{
-                    left: `${p.x + p.w / 2}%`,
-                    top: `${dol ? p.y + p.h - 3 : gora ? p.y + p.h * 0.12 : p.y - 0.5}%`,
+                    left: `${kotwica ? kotwica.x : p.x + p.w / 2}%`,
+                    top: `${kotwica ? kotwica.y : dol ? p.y + p.h - 3 : gora ? p.y + p.h * 0.12 : p.y - 0.5}%`,
                   }}
                 >
                   <span className="whitespace-nowrap rounded-full border border-white/15 bg-[#140c07]/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/90 backdrop-blur-md">
