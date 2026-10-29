@@ -151,7 +151,7 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
             {/* Bez animacji wejścia: ten akapit to największy element pierwszego ekranu na telefonie (LCP). */}
             <p className="mt-6 max-w-[36rem] text-[15px] leading-relaxed text-foreground/90 sm:mt-10 sm:text-lg">
               Dobieramy magazyn do Twojej fotowoltaiki, montujemy go w&nbsp;jeden dzień i&nbsp;pomagamy załatwić
-              dotację z&nbsp;programu Mój Prąd. Cenę znasz od razu, bez wizyty handlowca.
+              dotację do magazynu (program Przydomowe Magazyny Energii). Cenę znasz od razu, bez wizyty handlowca.
             </p>
             <div className="fade mt-8 flex flex-wrap items-center gap-4 sm:mt-12 sm:gap-6" style={delay(550)}>
               <a

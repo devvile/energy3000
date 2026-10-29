@@ -307,7 +307,7 @@ export const OPCJE: Opcja[] = [
   },
 ];
 
-// Program PME2 (Mój Prąd — magazyny energii): 30% kosztu magazynu z montażem,
+// Program PME2 (Przydomowe Magazyny Energii, część 2 — następca Mój Prąd): 30% kosztu magazynu z montażem,
 // nie więcej niż 800 zł/kWh i 16 000 zł (net-billing) albo 8 000 zł (net-metering).
 // ⚠️ Falownik i EMS NIE są kosztem kwalifikowanym (FAQ PME2, pyt. 9, 10, 24).
 export const DOTACJA = {

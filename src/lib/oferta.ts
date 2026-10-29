@@ -12,7 +12,7 @@ export const EMAIL = "biuro@energy3000.pl"; // po aliasie w Google Workspace →
 export const HOURS = "pn–pt 8:00–20:00, sob 9:00–14:00"; // PROPOZYCJA
 export const REGION = "Kielce + 100 km";
 
-// Program „Mój Prąd — magazyny energii” (PME2): 30% kosztu magazynu z montażem (falownik i EMS nie są kosztem
+// Program „Przydomowe Magazyny Energii, część 2” (PME2, następca Mój Prąd): 30% kosztu magazynu z montażem (falownik i EMS nie są kosztem
 // kwalifikowanym), max 800 zł/kWh, max 16 000 zł (net-billing) albo 8 000 zł (net-metering).
 export const SUBSIDY = {
   share: 0.3,

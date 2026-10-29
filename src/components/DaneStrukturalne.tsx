@@ -13,7 +13,7 @@ export function DaneStrukturalne() {
     "@id": `${SITE_URL}/#firma`,
     name: BRAND,
     description:
-      "Magazyny energii do istniejącej fotowoltaiki: dobór, montaż w jeden dzień i pomoc przy dotacji Mój Prąd. Kielce i okolice do 100 km.",
+      "Magazyny energii do istniejącej fotowoltaiki: dobór, montaż w jeden dzień i pomoc przy dotacji z programu Przydomowe Magazyny Energii (PME2). Kielce i okolice do 100 km.",
     url: SITE_URL,
     telephone: PHONE_HREF.replace("tel:", ""),
     email: EMAIL,

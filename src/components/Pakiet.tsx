@@ -7,7 +7,7 @@ const ITEMS = [
   ["Nowy falownik", "Hybrydowy, czyli steruje jednocześnie panelami i magazynem. Stary zwykle nie współpracuje z baterią."],
   ["Montaż w jeden dzień", "Robi go elektryk z uprawnieniami. Nikt nie wchodzi na dach, a uruchomienie jest w cenie."],
   ["Zgłoszenie do zakładu energetycznego", "Bez tego nie ma dotacji, więc załatwiamy to za Ciebie."],
-  ["Pomoc przy dotacji", "Zbieramy dokumenty i pomagamy wysłać wniosek do programu Mój Prąd."],
+  ["Pomoc przy dotacji", "Zbieramy dokumenty i pomagamy wysłać wniosek o dotację z programu Przydomowe Magazyny Energii."],
   ["Prąd przy awarii", "Najważniejsze obwody działają, nawet gdy w okolicy wyłączą prąd. Które, ustala elektryk."],
 ];
 

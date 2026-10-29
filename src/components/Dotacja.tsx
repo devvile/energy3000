@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { SUBSIDY } from "@/lib/oferta";
 import { Countdown } from "./Countdown";
@@ -18,14 +19,14 @@ export function Dotacja() {
           <div>
             <Words text={"O dotacji mówimy\nwszystko od razu."} accent="wszystko" className="text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]" />
             <p data-reveal className="mt-6 max-w-lg text-lg leading-relaxed text-ink/80 sm:text-xl">
-              Dotacja Mój Prąd zwraca część kosztu magazynu energii. Oto liczby, zanim o nie zapytasz.
+              Program Przydomowe Magazyny Energii (następca Mój Prąd) zwraca część kosztu magazynu. Oto liczby, zanim o nie zapytasz.
             </p>
           </div>
           <div data-reveal className="rounded-3xl bg-ink p-7 text-cream sm:p-9">
             <p className="text-2xl font-medium sm:text-3xl">
               <Countdown />
             </p>
-            <p className="mt-1 text-sm text-cream/60">Nabór wniosków Mój Prąd</p>
+            <p className="mt-1 text-sm text-cream/60">Nabór wniosków PME2</p>
             <p className="mt-4 text-sm leading-relaxed text-cream/70">
               Wnioski można składać od 20 października 2026 do {SUBSIDY.end}, chyba że pieniądze skończą się wcześniej
               (pula to {SUBSIDY.pool}). Liczy się kolejność zgłoszeń.
@@ -60,6 +61,11 @@ export function Dotacja() {
             jest zapłacona. Mówimy o tym na samym początku, żeby nie było niespodzianek. O dotacji decyduje NFOŚiGW. My
             pilnujemy, żeby sprzęt spełniał wymagania programu, a dokumenty były kompletne. Jeśli bierzesz raty, część
             możesz potem spłacić z dotacji.
+          </p>
+          <p className="text-base md:col-start-2">
+            <Link href="/dotacja-do-magazynu-energii" className="underline underline-offset-4 hover:text-sun">
+              Dotacja do magazynu energii krok po kroku
+            </Link>
           </p>
         </div>
       </div>

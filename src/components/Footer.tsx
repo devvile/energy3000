@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { BRAND, COMPANY, EMAIL, HOURS, PHONE, PHONE_HREF, REGION } from "@/lib/oferta";
+import { PORADNIKI } from "./Poradnik";
 
 // Stopka z wielkim znakiem marki i danymi spółki (wymagane na stronie spółki, art. 206 KSH)
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#0e0905] px-5 pb-28 pt-20 text-foreground sm:px-8 md:pb-10">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 pb-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 pb-14 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <p className="max-w-sm text-2xl font-medium leading-snug tracking-[-0.03em]">
               Magazyny energii do paneli, które już masz. Dobór, montaż i pomoc przy dotacji.
@@ -26,18 +27,26 @@ export function Footer() {
           <div className="space-y-2 text-sm">
             <p className="text-sm text-foreground/50">Na skróty</p>
             {[
-              ["#jak-dziala", "Jak to działa"],
-              ["#cena", "Cena"],
-              ["#dotacja", "Dotacja"],
-              ["#pytania", "Pytania"],
+              ["/#jak-dziala", "Jak to działa"],
+              ["/#cena", "Cena"],
+              ["/#dotacja", "Dotacja"],
+              ["/#pytania", "Pytania"],
             ].map(([href, label]) => (
-              <a key={href} href={href} className="block hover:text-sun">
+              <Link key={href} href={href} className="block hover:text-sun">
                 {label}
-              </a>
+              </Link>
             ))}
             <Link href="/polityka-prywatnosci" className="block hover:text-sun">
               Polityka prywatności
             </Link>
+          </div>
+          <div className="space-y-2 text-sm">
+            <p className="text-sm text-foreground/50">Poradniki</p>
+            {PORADNIKI.map((p) => (
+              <Link key={p.href} href={p.href} className="block hover:text-sun">
+                {p.tytul}
+              </Link>
+            ))}
           </div>
         </div>
 

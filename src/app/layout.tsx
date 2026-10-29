@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Magazyn energii do fotowoltaiki z montażem — E3000 Kielce",
   description:
-    "Magazyny energii Deye i FoxESS do Twojej fotowoltaiki: dobór, montaż w jeden dzień i pomoc przy dotacji Mój Prąd. Kielce i okolice do 100 km. Cena od razu w konfiguratorze.",
+    "Magazyny energii Deye i FoxESS do Twojej fotowoltaiki: dobór, montaż w jeden dzień i pomoc przy dotacji PME2 (dawniej Mój Prąd). Kielce i okolice do 100 km. Cena od razu w konfiguratorze.",
   openGraph: {
     title: "E3000 — Słońce za dnia. Prąd na noc.",
     description: "Magazyn energii do Twojej fotowoltaiki z montażem i pomocą przy dotacji. Kielce + 100 km.",
