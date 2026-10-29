@@ -10,7 +10,7 @@ import { type PointerEvent, useEffect, useMemo, useRef } from "react";
 import type { Stan, Wyliczenie } from "@/lib/konfigurator";
 import { formatKwh } from "@/lib/konfigurator";
 import { SCENA, WARSTWY, type WarstwaId } from "./warstwy";
-import { WARSTWY_GARAZ, type WarstwaGarazId } from "./warstwyGaraz";
+import { GARAZ, WARSTWY_GARAZ, type WarstwaGarazId } from "./warstwyGaraz";
 
 export type Kamera = "calosc" | "dach" | "garaz" | "dodatki" | "noc";
 /** Plan: widok całego domu albo osobna scena garażu (zbliżenie), do której przechodzimy po zoomie. */
@@ -257,7 +257,7 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
 
         {/* Plan garażu: osobna scena ze zbliżeniem, własne warstwy magazynów */}
         <div ref={planRef} className="pointer-events-none absolute inset-0 opacity-0 will-change-transform">
-          <Image src="/img/garaz/garaz.webp" alt="Wnętrze garażu z tylną ścianą na magazyn energii" fill sizes="100vw" className="object-cover" />
+          <Image src={`/img/garaz/garaz.v${GARAZ.wersja}.webp`} alt="Tylna ściana garażu, na której staje magazyn energii" fill sizes="100vw" className="object-cover" />
           {(Object.keys(WARSTWY_GARAZ) as WarstwaGarazId[]).map((id) => {
             const p = WARSTWY_GARAZ[id];
             return (
@@ -269,7 +269,7 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
                 className="absolute opacity-0"
                 style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.w}%`, height: `${p.h}%` }}
               >
-                <Image src={`/img/garaz/${id}.webp`} alt="" fill sizes="60vw" className="object-fill" />
+                <Image src={`/img/garaz/${id}.v${GARAZ.wersja}.webp`} alt="" fill sizes="60vw" className="object-fill" />
                 <div
                   data-glow
                   className="pointer-events-none absolute left-1/2 top-1/2 size-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
