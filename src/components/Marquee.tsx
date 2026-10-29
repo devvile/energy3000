@@ -5,7 +5,7 @@ const ITEMS = [
   "Montaż w jeden dzień",
   "Elektryk z uprawnieniami",
   "Bezpieczne baterie LFP",
-  "Raty 0%",
+  "Raty",
 ];
 
 // Nieskończony pasek z obietnicami (treść zdublowana, animacja przesuwa o połowę)
