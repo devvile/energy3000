@@ -15,5 +15,5 @@ Potrzebny Python 3 z Pillow (`pip install pillow`) i Node z Playwrightem (`npm i
 - `wytnij.py wejście wyjście [tolerancja]` — zdejmuje jednolite tło (kolor z narożnika) ze zdjęcia produktu na białym tle, maska binarna z miękką krawędzią.
 
 ## Zrzuty (Playwright)
-- `zrzuty/k3d.mjs <url> <prefix> [szerokość]` — przechodzi `/konfigurator-3d` krok po kroku i zapisuje zrzut każdego kroku (desktop 1440 albo np. 390).
+- `zrzuty/k3d.mjs <url> <prefix> [szerokość]` — przechodzi konfigurator 3D (`/konfigurator-3d` albo `/#cena` na stronie głównej) krok po kroku i zapisuje zrzut każdego kroku (desktop 1440 albo np. 390).
 - `zrzuty/kreator.mjs` — `/konfigurator`, `zrzuty/shot.mjs` i `linia.mjs` — sekcja „Cena” na stronie głównej.

@@ -2,8 +2,9 @@
 
 // Konfigurator „jak kreator postaci”: scena domu na cały ekran, panel wyborów jak ekwipunek, HUD ze statystykami.
 // Ta sama logika i dane co w pozostałych wersjach (useKonfigurator) — inna jest tylko warstwa wizualna.
+// `osadzony`: sekcja „Cena” na stronie głównej — bez własnego logo i telefonu (są w pływającym nagłówku strony),
+// z odstępem na ten nagłówek. Bez osadzenia: osobna strona /konfigurator-3d.
 
-import gsap from "gsap";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { PHONE, PHONE_HREF } from "@/lib/oferta";
@@ -14,20 +15,19 @@ import { Scena, type Kamera } from "./Scena";
 
 const KROKI = ["Twój dom", "Marka", "Wielkość", "Dodatki", "Twój zestaw"] as const;
 
-export function Kreator3d() {
+export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
   const k = useKonfigurator();
   const { stan, wyliczenie } = k;
   const [krok, setKrok] = useState(0);
   const [najdalej, setNajdalej] = useState(0);
-  const [start, setStart] = useState(false);
   const [awaria, setAwaria] = useState(false);
-  const intro = useRef<HTMLDivElement>(null);
+  const sekcja = useRef<HTMLElement>(null);
   const ostatni = krok === KROKI.length - 1;
 
-  const kamera: Kamera = !start ? "calosc" : krok === 0 ? (stan.pvKwp != null ? "dach" : "calosc") : krok <= 2 ? "garaz" : krok === 3 ? "dodatki" : "noc";
-  const noc = start && ostatni;
+  const kamera: Kamera = krok === 0 ? (stan.pvKwp != null ? "dach" : "calosc") : krok <= 2 ? "garaz" : krok === 3 ? "dodatki" : "noc";
+  const noc = ostatni;
   // Kroki „Marka” i „Wielkość” dzieją się w osobnej scenie garażu; zoom na dom jest tylko przejściem.
-  const plan = start && (krok === 1 || krok === 2) ? "garaz" : "dom";
+  const plan = (krok === 1 || krok === 2) ? "garaz" : "dom";
 
   // Symulacja awarii: po włączeniu „całego domu” dom przez chwilę świeci z magazynu także za dnia.
   const awariaTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,28 +50,37 @@ export function Kreator3d() {
     },
   };
 
-  const zacznij = () => {
-    gsap.to(intro.current, { opacity: 0, duration: 1, ease: "power2.inOut", onComplete: () => setStart(true) });
-  };
-
   const idz = (n: number) => {
     const cel = Math.max(0, Math.min(KROKI.length - 1, n));
     setKrok(cel);
     setNajdalej((m) => Math.max(m, cel));
-    if (window.innerWidth < 1024) window.scrollTo({ top: 0, behavior: "smooth" });
+    // Telefon: panel jest pod sceną — po zmianie kroku wracamy na górę konfiguratora, żeby zobaczyć, co się zmieniło.
+    if (window.innerWidth < 1024) sekcja.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="relative flex min-h-svh flex-col bg-[#140c07] text-foreground lg:h-svh lg:overflow-hidden">
+    <section
+      ref={sekcja}
+      id={osadzony ? "cena" : undefined}
+      className="relative flex min-h-svh flex-col bg-[#140c07] text-foreground lg:h-svh lg:overflow-hidden"
+    >
       {/* Pasek górny */}
-      <header className="relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4">
-        <Link href="/" aria-label="E3000 — strona główna" className="flex items-baseline text-lg font-semibold tracking-tight">
-          E<span className="font-serif text-[1.4em] font-normal italic leading-none">3000</span>
-        </Link>
+      <header
+        className={`relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4 ${osadzony ? "pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.25rem]" : ""}`}
+      >
+        {osadzony ? (
+          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50">
+            <span className="h-px w-8 bg-foreground/40" /> Cena
+          </p>
+        ) : (
+          <Link href="/" aria-label="E3000 — strona główna" className="flex items-baseline text-lg font-semibold tracking-tight">
+            E<span className="font-serif text-[1.4em] font-normal italic leading-none">3000</span>
+          </Link>
+        )}
         <ol className="hidden items-center gap-2 md:flex">
           {KROKI.map((n, i) => {
             const aktywny = i === krok;
-            const dostepny = start && i <= najdalej;
+            const dostepny = i <= najdalej;
             return (
               <li key={n} className="flex items-center gap-2">
                 <button
@@ -91,51 +100,27 @@ export function Kreator3d() {
             );
           })}
         </ol>
-        <a href={PHONE_HREF} className="text-sm tabular-nums text-foreground/80 hover:text-foreground">
-          {PHONE}
-        </a>
+        {osadzony ? (
+          <span className="hidden w-[4.5rem] md:block" aria-hidden />
+        ) : (
+          <a href={PHONE_HREF} className="text-sm tabular-nums text-foreground/80 hover:text-foreground">
+            {PHONE}
+          </a>
+        )}
       </header>
 
       {/* Scena + panel */}
       <div className="relative flex flex-1 flex-col lg:min-h-0 lg:flex-row">
         <div className="relative flex items-center justify-center px-2 lg:min-h-0 lg:flex-1 lg:px-6">
           {/* Szerokość sceny z wysokości ekranu (klasa .scena-ramka w globals.css), żeby krok mieścił się bez przewijania. */}
-          <div className="scena-ramka w-full">
-            <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={start && krok >= 1} awaria={awaria} className="w-full" />
+          <div className={`scena-ramka w-full ${osadzony ? "osadzona" : ""}`}>
+            <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={krok >= 1} awaria={awaria} className="w-full" />
           </div>
 
-          {/* Intro: pełny ekran, scena prześwituje spod spodu */}
-          {!start && (
-            <div ref={intro} className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-[#140c07]/60 px-6 text-center backdrop-blur-[3px]">
-              <p className="mb-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/60">
-                <span className="h-px w-8 bg-foreground/40" /> Konfigurator <span className="h-px w-8 bg-foreground/40" />
-              </p>
-              <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] font-medium leading-[0.98] tracking-[-0.05em]">
-                Zbuduj dom,
-                <br />
-                który nie boi się <em className="font-serif font-normal italic">nocy</em>.
-              </h1>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-foreground/75">
-                Cztery wybory. Każdy pojawia się w Twoim domu. Na końcu wiesz, ile to kosztuje i ile wraca z dotacji.
-              </p>
-              <button
-                type="button"
-                onClick={zacznij}
-                className="cta group mt-8 flex items-center gap-5 rounded-full bg-cream py-2 pl-7 pr-2 text-lg font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03]"
-              >
-                Zacznij
-                <span className="flex size-12 items-center justify-center rounded-full bg-ink text-cream transition-transform duration-500 group-hover:translate-x-0.5">
-                  <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden>
-                    <path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" strokeWidth="2" />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          )}
         </div>
 
         <aside className="relative z-10 border-t border-white/10 bg-[#140c07]/80 px-5 py-4 backdrop-blur-xl sm:px-6 lg:w-[26rem] lg:py-6 lg:overflow-y-auto lg:border-l lg:border-t-0">
-          <div key={krok} className={`krok-in ${start ? "" : "pointer-events-none opacity-40"}`}>
+          <div key={krok} className="krok-in">
             {krok === 0 && <PanelDom k={k} />}
             {krok === 1 && <PanelMarka k={k} />}
             {krok === 2 && <PanelWielkosc k={k} />}
@@ -156,7 +141,7 @@ export function Kreator3d() {
             <button
               type="button"
               onClick={() => idz(krok - 1)}
-              disabled={!start || krok === 0}
+              disabled={krok === 0}
               aria-label="Wstecz"
               className="cta text-sm text-foreground/70 transition-colors hover:text-foreground disabled:invisible"
             >
@@ -183,7 +168,6 @@ export function Kreator3d() {
             ) : (
               <button
                 type="button"
-                disabled={!start}
                 onClick={() => idz(krok + 1)}
                 className="cta group flex items-center gap-3 rounded-full bg-cream py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink lg:gap-4 lg:pl-6 lg:text-base transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] disabled:opacity-40"
               >

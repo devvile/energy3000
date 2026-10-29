@@ -300,3 +300,12 @@ html {
     max-width: min(100%, calc((100svh - 15rem) * 1.768));
   }
 }
+/* Osadzony na stronie głównej: nad paskiem kroków jest jeszcze pływający nagłówek strony. */
+.scena-ramka.osadzona {
+  max-width: min(100%, calc((100svh - 33rem) * 1.768));
+}
+@media (min-width: 1024px) {
+  .scena-ramka.osadzona {
+    max-width: min(100%, calc((100svh - 17rem) * 1.768));
+  }
+}

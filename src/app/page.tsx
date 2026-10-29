@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { HeroSequence } from "@/components/HeroSequence";
 import { Intro } from "@/components/Intro";
-import { Konfigurator } from "@/components/konfigurator/Konfigurator";
+import { Kreator3d } from "@/components/konfigurator3d/Kreator3d";
 import { Kroki } from "@/components/Kroki";
 import { Manifest } from "@/components/Manifest";
 import { Marquee } from "@/components/Marquee";
@@ -36,7 +36,7 @@ export default function Home() {
         <Marquee />
         <Manifest />
         <Pakiet />
-        <Konfigurator />
+        <Kreator3d osadzony />
         <Dotacja />
         <Kroki />
         <Region />

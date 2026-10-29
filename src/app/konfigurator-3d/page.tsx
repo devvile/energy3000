@@ -5,7 +5,8 @@ import { RevealObserver } from "@/components/RevealObserver";
 import { Wycena } from "@/components/Wycena";
 
 // Immersyjny konfigurator „kreator postaci”: scena domu w przekroju, w której pojawia się wybrany sprzęt.
-// Wariant do porównania ze stroną główną i /konfigurator. Bez indeksowania — zdejmij `robots`, gdy ma być publiczny.
+// Ten sam konfigurator jest sekcją „Cena” na stronie głównej; tu wersja na cały ekran (np. do reklam).
+// Bez indeksowania — zdejmij `robots`, gdy ma być publiczny.
 export const metadata: Metadata = {
   title: "Zbuduj dom, który nie boi się nocy — E3000",
   description: "Zobacz, jak magazyn energii pojawia się w Twoim domu. Cztery wybory, cena i dotacja od razu.",

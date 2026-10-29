@@ -24,11 +24,15 @@ export function Logo({ className = "" }: { className?: string }) {
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
+  const [wKonfiguratorze, setWKonfiguratorze] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40);
       setPastHero(window.scrollY > window.innerHeight * 0.8);
+      // Konfigurator ma własną stopkę z „Dalej” i wyceną — dolny pasek by ją zasłaniał.
+      const r = document.getElementById("cena")?.getBoundingClientRect();
+      setWKonfiguratorze(!!r && r.top < window.innerHeight && r.bottom > 0);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -71,7 +75,7 @@ export function Header() {
       {/* Telefon: stały pasek z akcjami po zjechaniu z hero */}
       <div
         className={`fixed inset-x-3 bottom-3 z-40 grid grid-cols-2 gap-2 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
-          pastHero ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-24 opacity-0"
+          pastHero && !wKonfiguratorze ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-24 opacity-0"
         }`}
         style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
       >

@@ -1,4 +1,5 @@
 // Zrzuty konfiguratora 3D: node k3d.mjs <url> <prefix> [szerokość]
+// url: http://localhost:3000/konfigurator-3d albo http://localhost:3000/#cena (sekcja na stronie głównej)
 import { chromium } from "playwright";
 const [url, prefix = "k3d", w = "1440"] = process.argv.slice(2);
 const browser = await chromium.launch();
@@ -7,9 +8,9 @@ page.on("pageerror", (e) => console.log("PAGEERROR", e.message));
 page.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE", m.text().slice(0, 200)); });
 await page.goto(url, { waitUntil: "networkidle" });
 await page.waitForTimeout(1200);
-await page.screenshot({ path: `${prefix}-0-intro.png` });
-await page.locator('button:has-text("Zacznij")').click();
-await page.waitForTimeout(2200);
+// Na stronie głównej konfigurator jest sekcją #cena — przewijamy do niej.
+if (new URL(url).hash === "#cena") { await page.locator("#cena").scrollIntoViewIfNeeded(); await page.waitForTimeout(1600); }
+await page.screenshot({ path: `${prefix}-0-start.png` });
 // krok 1: wpisz moc paneli
 await page.locator('input[placeholder="np. 8"]').fill("8");
 await page.waitForTimeout(2200);
