@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { Countdown } from "@/components/Countdown";
+import { DaneStrukturalne } from "@/components/DaneStrukturalne";
 import { Dotacja } from "@/components/Dotacja";
 import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
@@ -14,6 +16,8 @@ import { Region } from "@/components/Region";
 import { RevealObserver } from "@/components/RevealObserver";
 import { Wycena } from "@/components/Wycena";
 import { PAKIETY, REGION, zl } from "@/lib/oferta";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const standard = PAKIETY.find((p) => p.featured) ?? PAKIETY[0];
 
@@ -45,6 +49,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <DaneStrukturalne />
     </>
   );
 }

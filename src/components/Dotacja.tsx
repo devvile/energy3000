@@ -18,7 +18,7 @@ export function Dotacja() {
           <div>
             <Words text={"O dotacji mówimy\nwszystko od razu."} accent="wszystko" className="text-[clamp(2.4rem,5vw,5rem)] font-medium leading-[0.95] tracking-[-0.05em]" />
             <p data-reveal className="mt-6 max-w-lg text-lg leading-relaxed text-ink/80 sm:text-xl">
-              Program Mój Prąd zwraca część kosztu magazynu energii. Oto liczby, zanim o nie zapytasz.
+              Dotacja Mój Prąd zwraca część kosztu magazynu energii. Oto liczby, zanim o nie zapytasz.
             </p>
           </div>
           <div data-reveal className="rounded-3xl bg-ink p-7 text-cream sm:p-9">

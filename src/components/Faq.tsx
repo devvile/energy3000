@@ -1,6 +1,6 @@
 import { Words } from "./Words";
 
-const QA = [
+export const QA: [string, string][] = [
   [
     "Kiedy dostanę dotację?",
     "Po montażu. Wniosek można złożyć dopiero wtedy, gdy magazyn działa, jest zgłoszony do zakładu energetycznego, a faktura jest zapłacona. Na przelew czeka się zwykle 4–7 miesięcy.",

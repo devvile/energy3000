@@ -32,7 +32,7 @@ export function Region() {
           <div className="mx-auto max-w-7xl">
             <Words text="Jesteśmy stąd." accent="stąd" className="text-[clamp(3rem,8vw,8rem)] font-medium leading-[0.92] tracking-[-0.05em]" />
             <p data-reveal className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/90 sm:text-xl">
-              Montujemy u sąsiadów: Kielce i okolice do 100 km.
+              Montujemy magazyny energii u sąsiadów: Kielce i okolice do 100 km, całe świętokrzyskie.
             </p>
           </div>
         </div>

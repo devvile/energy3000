@@ -134,10 +134,11 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
         {/* 1. Hero */}
         <div ref={intro} className="absolute inset-0 flex flex-col will-change-transform">
           <div className="flex flex-1 flex-col justify-end px-5 pb-8 pt-28 sm:px-8 md:justify-center md:pb-28 [text-shadow:0_1px_24px_rgba(20,12,7,0.35)]">
-            <p className="fade mb-5 text-base font-medium text-foreground/90 sm:mb-8" style={delay(100)}>
-              Magazyn energii do paneli, które już masz
-            </p>
+            {/* Fraza „magazyn energii” jest częścią H1 (SEO), wizualnie jako mała linia nad hasłem. */}
             <h1 className="text-[clamp(3.4rem,7.4vw,8.5rem)] font-medium leading-[0.9] tracking-[-0.05em]">
+              <span className="fade mb-5 block text-base font-medium leading-normal tracking-normal text-foreground/90 sm:mb-8" style={delay(100)}>
+                Magazyn energii do paneli, które już masz
+              </span>
               <span className="reveal block">
                 <span style={delay(0)}>Słońce za dnia.</span>
               </span>
@@ -147,7 +148,8 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
                 </span>
               </span>
             </h1>
-            <p className="fade mt-6 max-w-[36rem] text-[15px] leading-relaxed text-foreground/90 sm:mt-10 sm:text-lg" style={delay(400)}>
+            {/* Bez animacji wejścia: ten akapit to największy element pierwszego ekranu na telefonie (LCP). */}
+            <p className="mt-6 max-w-[36rem] text-[15px] leading-relaxed text-foreground/90 sm:mt-10 sm:text-lg">
               Dobieramy magazyn do Twojej fotowoltaiki, montujemy go w&nbsp;jeden dzień i&nbsp;pomagamy załatwić
               dotację z&nbsp;programu Mój Prąd. Cenę znasz od razu, bez wizyty handlowca.
             </p>

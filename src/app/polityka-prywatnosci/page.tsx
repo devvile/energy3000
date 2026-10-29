@@ -7,6 +7,12 @@ import { BRAND, COMPANY, EMAIL, PHONE } from "@/lib/oferta";
 export const metadata: Metadata = {
   title: `Polityka prywatności — ${BRAND}`,
   description: `Jak ${BRAND} (${COMPANY.name}) przetwarza dane osobowe z formularza kontaktowego.`,
+  alternates: { canonical: "/polityka-prywatnosci" },
+  openGraph: {
+    title: `Polityka prywatności — ${BRAND}`,
+    description: `Jak ${BRAND} (${COMPANY.name}) przetwarza dane osobowe z formularza kontaktowego.`,
+    url: "/polityka-prywatnosci",
+  },
 };
 
 // ⚠️ Wersja robocza — do przejrzenia przez prawnika przed startem kampanii.

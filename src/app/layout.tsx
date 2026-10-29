@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,15 +21,17 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://e3000.pl"),
-  title: "E3000 — magazyn energii do Twojej fotowoltaiki | Kielce i okolice",
+  metadataBase: new URL(SITE_URL),
+  title: "Magazyn energii do fotowoltaiki z montażem — E3000 Kielce",
   description:
-    "Dobieramy magazyn energii do Twojej fotowoltaiki, montujemy go w jeden dzień i pomagamy załatwić dotację z programu Mój Prąd. Cenę znasz od razu, oddzwaniamy w 30 minut.",
+    "Magazyny energii Deye i FoxESS do Twojej fotowoltaiki: dobór, montaż w jeden dzień i pomoc przy dotacji Mój Prąd. Kielce i okolice do 100 km. Cena od razu w konfiguratorze.",
   openGraph: {
     title: "E3000 — Słońce za dnia. Prąd na noc.",
     description: "Magazyn energii do Twojej fotowoltaiki z montażem i pomocą przy dotacji. Kielce + 100 km.",
     locale: "pl_PL",
     type: "website",
+    siteName: "E3000",
+    url: "/",
   },
 };
 
