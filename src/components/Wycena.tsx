@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { type FormEvent, useEffect, useState } from "react";
-import { formatZl } from "@/lib/konfigurator";
+import { BEZ_PV, formatZl } from "@/lib/konfigurator";
 import { EMAIL, HOURS, PHONE, PHONE_HREF } from "@/lib/oferta";
 import { ZDARZENIE_KONFIGURACJI, type ZdarzenieKonfiguracji } from "./konfigurator/useKonfigurator";
 import { Words } from "./Words";
@@ -16,7 +16,12 @@ export function Wycena() {
 
   // Konfigurator wysyła zdarzenie także przy pierwszym renderze (z konfiguracją z adresu strony), więc tu tylko słuchamy.
   useEffect(() => {
-    const onZmiana = (e: Event) => setZestaw((e as CustomEvent<ZdarzenieKonfiguracji>).detail);
+    const onZmiana = (e: Event) => {
+      const z = (e as CustomEvent<ZdarzenieKonfiguracji>).detail;
+      setZestaw(z);
+      // „Nie mam paneli” w konfiguratorze → od razu zaznaczamy to w pytaniu o fotowoltaikę.
+      if (z.dane.sytuacja === "brak-pv") setPv("nie");
+    };
     window.addEventListener(ZDARZENIE_KONFIGURACJI, onZmiana);
     return () => window.removeEventListener(ZDARZENIE_KONFIGURACJI, onZmiana);
   }, []);
@@ -69,7 +74,7 @@ export function Wycena() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-7">
-              {zestaw && (
+              {zestaw && zestaw.dane.sytuacja !== "brak-pv" && (
                 <div className="flex items-start justify-between gap-4 rounded-2xl bg-ink p-4 text-cream sm:p-5">
                   <div>
                     <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream/50">Twój zestaw z konfiguratora</p>
@@ -135,16 +140,13 @@ export function Wycena() {
                         pv === v ? "border-ink bg-ink text-cream" : "border-ink/20 hover:border-ink/50"
                       }`}
                     >
-                      <input type="radio" name="fotowoltaika" value={v} required className="sr-only" onChange={() => setPv(v)} />
+                      <input type="radio" name="fotowoltaika" value={v} required checked={pv === v} className="sr-only" onChange={() => setPv(v)} />
                       {v}
                     </label>
                   ))}
                 </div>
                 {pv === "nie" && (
-                  <p className="mt-3 text-sm text-ink/60">
-                    Na razie dokładamy magazyny do paneli, które już działają. Zostaw numer, a odezwiemy się, gdy
-                    poszerzymy ofertę.
-                  </p>
+                  <p className="mt-3 text-sm text-ink/60">{BEZ_PV.zacheta}</p>
                 )}
               </fieldset>
 

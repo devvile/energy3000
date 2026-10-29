@@ -73,14 +73,16 @@ type Props = {
   kamera: Kamera;
   plan: Plan;
   noc: boolean;
-  /** Od kroku „Marka” magazyn jest w scenie. */
+  /** Od kroku „Marka” magazyn jest w scenie garażu. */
   pokazMagazyn: boolean;
+  /** Magazyn w widoku domu — dopiero po powrocie z garażu. Wcześniej pojawiałby się tuż przed zoomem do garażu. */
+  pokazMagazynDom: boolean;
   /** Krótka animacja „awarii”: dom na zasilaniu z magazynu (przy opcji „cały dom”). */
   awaria?: boolean;
   className?: string;
 };
 
-export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awaria, className = "" }: Props) {
+export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, pokazMagazynDom, awaria, className = "" }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const planRef = useRef<HTMLDivElement>(null);
   const elsG = useRef<Partial<Record<WarstwaGarazId, HTMLDivElement>>>({});
@@ -122,7 +124,7 @@ export function Scena({ stan, wyliczenie, kamera, plan, noc, pokazMagazyn, awari
   const els = useRef<Partial<Record<WarstwaId, HTMLDivElement>>>({});
   const poprzednie = useRef<Set<WarstwaId>>(new Set());
 
-  const vis = useMemo(() => widoczne(stan, wyliczenie, pokazMagazyn, noc), [stan, wyliczenie, pokazMagazyn, noc]);
+  const vis = useMemo(() => widoczne(stan, wyliczenie, pokazMagazynDom, noc), [stan, wyliczenie, pokazMagazynDom, noc]);
   const magazynId = Object.keys(vis).find((k) => /^(deye|fox)\d$/.test(k)) as WarstwaId | undefined;
 
   // Kamera: zoom na punkt sceny (origin w środku, przesunięcie w procentach). Podpisy skalują się odwrotnie,

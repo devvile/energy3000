@@ -23,6 +23,8 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
   const [awaria, setAwaria] = useState(false);
   const sekcja = useRef<HTMLElement>(null);
   const ostatni = krok === KROKI.length - 1;
+  // Bez paneli magazyn nie ma z czego się ładować — zamiast dalszych kroków karta z wyjaśnieniem i kontaktem (PanelDom).
+  const bezPv = stan.sytuacja === "brak-pv";
 
   const kamera: Kamera = krok === 0 ? (stan.pvKwp != null ? "dach" : "calosc") : krok <= 2 ? "garaz" : krok === 3 ? "dodatki" : "noc";
   const noc = ostatni;
@@ -82,7 +84,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
         <ol className="hidden items-center gap-2 md:flex">
           {KROKI.map((n, i) => {
             const aktywny = i === krok;
-            const dostepny = i <= najdalej;
+            const dostepny = i <= najdalej && (!bezPv || i === 0);
             return (
               <li key={n} className="flex items-center gap-2">
                 <button
@@ -116,7 +118,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
         <div className="relative flex items-center justify-center px-2 lg:min-h-0 lg:flex-1 lg:px-6">
           {/* Szerokość sceny z wysokości ekranu (klasa .scena-ramka w globals.css), żeby krok mieścił się bez przewijania. */}
           <div className={`scena-ramka w-full ${osadzony ? "osadzona" : ""}`}>
-            <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={krok >= 1} awaria={awaria} className="w-full" />
+            <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={krok >= 1} pokazMagazynDom={krok >= 3} awaria={awaria} className="w-full" />
           </div>
 
         </div>
@@ -137,7 +139,13 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
         {/* Na telefonie jeden wiersz: statystyki + strzałka wstecz + „Dalej”, żeby stopka nie zjadała ekranu. */}
         <div className="flex items-center justify-between gap-3 lg:gap-10">
           <div className="min-w-0 flex-1">
-            <Hud stan={stan} w={wyliczenie} />
+            {bezPv ? (
+              <p className="text-xs leading-relaxed text-foreground/70 lg:text-sm">
+                Bez paneli nie liczymy ceny magazynu. <span className="hidden sm:inline">Zostaw numer — doradzimy, od czego zacząć.</span>
+              </p>
+            ) : (
+              <Hud stan={stan} w={wyliczenie} />
+            )}
           </div>
           <div className="flex shrink-0 items-center gap-2 lg:gap-4">
             <button
@@ -154,13 +162,13 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
                 </svg>
               </span>
             </button>
-            {ostatni ? (
+            {ostatni || bezPv ? (
               <a
                 href="#wycena"
                 className="cta group flex items-center gap-3 rounded-full bg-sun py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink lg:gap-4 lg:pl-6 lg:text-base transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
               >
-                <span className="lg:hidden">Wycena</span>
-                <span className="hidden lg:inline">Zamów wycenę</span>
+                <span className="lg:hidden">{bezPv ? "Kontakt" : "Wycena"}</span>
+                <span className="hidden lg:inline">{bezPv ? "Zostaw numer" : "Zamów wycenę"}</span>
                 <span className="flex size-10 items-center justify-center rounded-full bg-ink text-cream transition-transform duration-500 group-hover:rotate-45">
                   <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden>
                     <path d="M4 14 14 4M6 4h8v8" stroke="currentColor" strokeWidth="2" />

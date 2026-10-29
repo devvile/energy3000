@@ -301,6 +301,15 @@ export function wylicz(wejscie: Stan): Wyliczenie {
   return w;
 }
 
+/** Komunikat dla osób bez paneli (konfigurator, formularz). Jedno miejsce — zmień tu, jeśli w ofercie pojawi się fotowoltaika. */
+export const BEZ_PV = {
+  tytul: "Magazyn potrzebuje paneli",
+  tekst:
+    "Magazyn ładuje się prądem z Twojej fotowoltaiki — bez niej nie ma z czego go napełnić, a dotacja Mój Prąd też wymaga paneli. Na razie dokładamy magazyny do instalacji, które już działają.",
+  zacheta: "Planujesz panele? Zostaw numer — doradzimy, jak zaplanować fotowoltaikę od razu z magazynem, i odezwiemy się, gdy poszerzymy ofertę.",
+  uwaga: "Na razie dokładamy magazyny do paneli, które już działają. Zostaw numer — odezwiemy się, gdy poszerzymy ofertę o fotowoltaikę.",
+};
+
 /** Uczciwe podpowiedzi do pokazania pod wyliczeniem. Kolejność = ważność. */
 export function uwagi(stan: Stan, w: Wyliczenie): string[] {
   const u: string[] = [];
@@ -308,7 +317,7 @@ export function uwagi(stan: Stan, w: Wyliczenie): string[] {
 
   switch (stan.sytuacja) {
     case "brak-pv":
-      u.push("Na razie dokładamy magazyny do paneli, które już działają. Zostaw numer — odezwiemy się, gdy poszerzymy ofertę o fotowoltaikę.");
+      u.push(BEZ_PV.uwaga);
       break;
     case "hybryda-deye-fox":
       u.push("Masz hybrydowy falownik Deye albo FoxESS? Wtedy dokładamy samą baterię — taniej niż cały zestaw, a dotacja prawie taka sama. Wycenimy to indywidualnie.");

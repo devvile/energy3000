@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import {
+  BEZ_PV,
   LINIE,
   LINIE_IDS,
   OPCJE,
@@ -104,14 +105,24 @@ export function PanelDom({ k }: { k: Konfigurator }) {
           </Chip>
         ))}
       </div>
-      <p className="mt-3 text-xs text-foreground/60 lg:mt-5">Panele zgłoszone do sieci</p>
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {ROZLICZENIA.map((r) => (
-          <Chip key={r.id} on={stan.rozliczenie === r.id} onClick={() => akcje.ustawRozliczenie(r.id)}>
-            {r.nazwa}
-          </Chip>
-        ))}
-      </div>
+      {stan.sytuacja === "brak-pv" ? (
+        <div className="krok-in mt-4 rounded-2xl border border-sun/40 bg-sun/10 p-4 lg:mt-6 lg:p-5">
+          <p className="text-base font-medium tracking-[-0.02em] lg:text-lg">{BEZ_PV.tytul}</p>
+          <p className="mt-1.5 text-xs leading-relaxed text-foreground/75 lg:text-sm">{BEZ_PV.tekst}</p>
+          <p className="mt-2 text-xs leading-relaxed text-foreground/75 lg:text-sm">{BEZ_PV.zacheta}</p>
+        </div>
+      ) : (
+        <>
+          <p className="mt-3 text-xs text-foreground/60 lg:mt-5">Panele zgłoszone do sieci</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {ROZLICZENIA.map((r) => (
+              <Chip key={r.id} on={stan.rozliczenie === r.id} onClick={() => akcje.ustawRozliczenie(r.id)}>
+                {r.nazwa}
+              </Chip>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
