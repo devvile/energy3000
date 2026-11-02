@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type CSSProperties, type ReactNode, useCallback, useRef } from "react";
+import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef } from "react";
 import { PAKIETY, PHONE, PHONE_HREF, zl } from "@/lib/oferta";
 import { range, useScrollProgress } from "@/lib/useScrollProgress";
 
@@ -52,12 +52,24 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
   const progress = useRef<HTMLDivElement>(null);
   const outro = useRef<HTMLDivElement>(null);
   const captions = useRef<(HTMLDivElement | null)[]>([]);
+  const telefon = useRef(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const ustaw = () => {
+      telefon.current = mq.matches;
+    };
+    ustaw();
+    mq.addEventListener("change", ustaw);
+    return () => mq.removeEventListener("change", ustaw);
+  }, []);
 
   const onProgress = useCallback((p: number) => {
     // Kadry
     if (sunset.current) sunset.current.style.opacity = String(range(p, 0.34, 0.46));
     if (night.current) night.current.style.opacity = String(range(p, 0.58, 0.7));
-    if (stage.current) stage.current.style.transform = `scale(${1.1 - p * 0.1})`;
+    // Telefon: zdjęcie jest pasem u góry ekranu, więc tylko lekki odjazd kamery (1,1 przybliżało za mocno).
+    const z = telefon.current ? 0.04 : 0.1;
+    if (stage.current) stage.current.style.transform = `scale(${1 + z - p * z})`;
     if (shade.current) shade.current.style.opacity = String(1 - range(p, 0.08, 0.2) * 0.5);
 
     // Tekst hero znika na początku przewijania
@@ -111,13 +123,20 @@ export function HeroSequence({ facts }: { facts: { label: string; value: ReactNo
 
   useScrollProgress(section, onProgress);
 
-  const img = "object-cover object-[72%_center] md:object-center";
+  // Telefon: kadr przesunięty na ścianę z magazynem (cały magazyn w pasie zdjęcia).
+  const img = "object-cover object-[78%_center] md:object-center";
 
   return (
     <section ref={section} className="relative h-[380svh] bg-[#140c07] text-foreground">
       <div className="sticky top-0 h-svh overflow-hidden">
-        {/* Kadry: dzień, zachód, noc — ten sam dom */}
-        <div ref={stage} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.1)" }}>
+        {/* Kadry: dzień, zachód, noc — ten sam dom. Na telefonie pas u góry ekranu (ok. 60%), a nie cały pionowy
+            ekran: poziome zdjęcie rozciągnięte na całą wysokość pokazywało ćwierć kadru i ucięty magazyn. */}
+        {/* Dół pasa wygaszony maską do przezroczystości (nie gradientem do koloru tła), więc bez szwu na styku z tłem. */}
+        <div
+          ref={stage}
+          className="absolute inset-x-0 top-0 h-[60svh] will-change-transform [mask-image:linear-gradient(to_bottom,black_50%,transparent)] md:inset-0 md:h-auto md:[mask-image:none]"
+          style={{ transform: "scale(1.1)" }}
+        >
           <Image src="/img/day.webp" alt="Magazyn energii na ścianie domu w słoneczny dzień" fill priority sizes="100vw" className={img} />
           <div ref={sunset} className="absolute inset-0" style={{ opacity: 0 }}>
             <Image src="/img/sunset.webp" alt="" fill sizes="100vw" className={img} />
