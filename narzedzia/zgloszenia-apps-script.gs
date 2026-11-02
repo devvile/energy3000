@@ -1,6 +1,7 @@
 // Zgłoszenia z formularza e3000.pl → arkusz Google + mail z powiadomieniem.
 // Kopia samodzielnego skryptu Apps Script (projekt „E3000 — zgłoszenia”) na koncie biuro@energy3000.pl; zapisuje do arkusza „E3000 — zgłoszenia”.
 // Wdrożenie: Wdróż → Nowe wdrożenie → Aplikacja internetowa; „Wykonaj jako: ja”, „Kto ma dostęp: każdy”.
+// Zmiana kodu: Wdróż → Zarządzaj wdrożeniami → ołówek → Wersja: Nowa wersja (adres zostaje ten sam). Strefa projektu: Europe/Warsaw.
 // Adres wdrożenia jest TYLKO w zmiennej środowiskowej Vercela ZGLOSZENIA_URL — strona wysyła zgłoszenie
 // do /api/zgloszenie, a dopiero serwer przekazuje je tutaj. Skrypt jest samodzielny (script.google.com) i pisze
 // do arkusza po jego ID.
@@ -26,7 +27,8 @@ function doPost(e) {
         ark.getRange(1, 1, 1, KOLUMNY.length).setFontWeight("bold");
       }
       ark.appendRow([
-        new Date(), t(d.imie), t(d.telefon), t(d.kod), t(d.moc), t(d.fotowoltaika), t(d.zestaw),
+        // Data jako tekst w czasie polskim: Date zapisywany przez appendRow przesuwał się o strefę projektu (USA).
+        Utilities.formatDate(new Date(), "Europe/Warsaw", "yyyy-MM-dd HH:mm:ss"), t(d.imie), t(d.telefon), t(d.kod), t(d.moc), t(d.fotowoltaika), t(d.zestaw),
         d.cena ? Number(d.cena) : "", d.poDotacji ? Number(d.poDotacji) : "", t(d.link), t(d.uwagi), "nowe", "", "",
       ]);
     } finally {
