@@ -7,10 +7,12 @@ import { EMAIL, HOURS, PHONE, PHONE_HREF } from "@/lib/oferta";
 import { ZDARZENIE_KONFIGURACJI, type ZdarzenieKonfiguracji } from "./konfigurator/useKonfigurator";
 import { Words } from "./Words";
 
-// Formularz zgłoszenia. TODO: wysyłka do arkusza Google (na razie tylko frontend — pokazuje potwierdzenie).
+// Formularz zgłoszenia → /api/zgloszenie → arkusz Google na koncie biuro@ + mail z powiadomieniem.
 // Zestaw z konfiguratora (sekcja „Cena”) dopina się do zgłoszenia sam: nasłuchujemy zdarzenia z useKonfigurator.
 export function Wycena() {
   const [sent, setSent] = useState(false);
+  const [wysylam, setWysylam] = useState(false);
+  const [blad, setBlad] = useState(false);
   const [pv, setPv] = useState<"tak" | "nie" | "">("");
   const [zestaw, setZestaw] = useState<ZdarzenieKonfiguracji | null>(null);
 
@@ -26,9 +28,26 @@ export function Wycena() {
     return () => window.removeEventListener(ZDARZENIE_KONFIGURACJI, onZmiana);
   }, []);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
+    if (wysylam) return;
+    setWysylam(true);
+    setBlad(false);
+    const dane = Object.fromEntries(new FormData(e.currentTarget).entries());
+    try {
+      const res = await fetch("/api/zgloszenie", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dane),
+      });
+      const wynik = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+      if (wynik?.ok) setSent(true);
+      else setBlad(true);
+    } catch {
+      setBlad(true);
+    } finally {
+      setWysylam(false);
+    }
   };
 
   return (
@@ -89,8 +108,12 @@ export function Wycena() {
                   <input type="hidden" name="konfiguracja" value={zestaw.kod} />
                   <input type="hidden" name="zestaw" value={`${zestaw.dane.zestaw} ${zestaw.dane.opcje ? `+ ${zestaw.dane.opcje}` : ""}`.trim()} />
                   <input type="hidden" name="cena" value={zestaw.dane.cena} />
+                  <input type="hidden" name="poDotacji" value={zestaw.dane.poDotacji} />
+                  <input type="hidden" name="uwagi" value={zestaw.dane.uwagi} />
                 </div>
               )}
+              {/* Pułapka na boty: niewidoczne pole, człowiek go nie wypełni. */}
+              <input type="text" name="firma" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
               <div className="grid gap-7 sm:grid-cols-2">
                 <label className="block">
                   <span className="text-sm text-ink/60">Imię</span>
@@ -159,11 +182,21 @@ export function Wycena() {
                 </span>
               </label>
 
+              {blad && (
+                <p role="alert" className="rounded-2xl bg-ink/5 p-4 text-sm leading-relaxed text-ink/80">
+                  Nie udało się wysłać zgłoszenia. Spróbuj jeszcze raz albo zadzwoń:{" "}
+                  <a href={PHONE_HREF} className="font-medium underline underline-offset-2">
+                    {PHONE}
+                  </a>
+                  .
+                </p>
+              )}
               <button
                 type="submit"
-                className="cta group flex w-full items-center justify-between rounded-full bg-ink py-2 pl-7 pr-2 text-lg font-medium text-cream transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
+                disabled={wysylam}
+                className="cta group flex w-full items-center justify-between rounded-full bg-ink py-2 pl-7 pr-2 text-lg font-medium text-cream transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] disabled:opacity-60"
               >
-                Oddzwońcie do mnie
+                {wysylam ? "Wysyłam…" : "Oddzwońcie do mnie"}
                 <span className="flex size-12 items-center justify-center rounded-full bg-sun text-ink transition-transform duration-500 group-hover:rotate-45">
                   <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden>
                     <path d="M4 14 14 4M6 4h8v8" stroke="currentColor" strokeWidth="2" />
