@@ -25,6 +25,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [wKonfiguratorze, setWKonfiguratorze] = useState(false);
+  // Telefon: gdy konfigurator zajmuje ekran od góry, nagłówek chowa się, żeby nie zasłaniał sceny.
+  const [nadKonfiguratorem, setNadKonfiguratorem] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,6 +35,7 @@ export function Header() {
       // Konfigurator ma własną stopkę z „Dalej” i wyceną — dolny pasek by ją zasłaniał.
       const r = document.getElementById("cena")?.getBoundingClientRect();
       setWKonfiguratorze(!!r && r.top < window.innerHeight && r.bottom > 0);
+      setNadKonfiguratorem(!!r && r.top <= 60 && r.bottom > window.innerHeight * 0.5);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -48,7 +51,7 @@ export function Header() {
         <div
           className={`mx-auto flex max-w-[90rem] items-center justify-between rounded-full px-4 py-2.5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:px-6 ${
             scrolled ? "border border-white/10 bg-[#140c07]/60 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.6)] backdrop-blur-xl" : "border border-transparent"
-          }`}
+          } ${nadKonfiguratorem ? "max-sm:pointer-events-none max-sm:-translate-y-[150%] max-sm:opacity-0" : ""}`}
         >
           <Logo />
           <nav className="hidden items-center gap-8 text-sm text-foreground/80 md:flex">

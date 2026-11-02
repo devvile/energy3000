@@ -18,3 +18,10 @@ Potrzebny Python 3 z Pillow (`pip install pillow`) i Node z Playwrightem (`npm i
 ## Zrzuty (Playwright)
 - `zrzuty/k3d.mjs <url> <prefix> [szerokość]` — przechodzi konfigurator 3D (`/konfigurator-3d` albo `/#cena` na stronie głównej) krok po kroku i zapisuje zrzut każdego kroku (desktop 1440 albo np. 390).
 - `zrzuty/kreator.mjs` — `/konfigurator`, `zrzuty/shot.mjs` i `linia.mjs` — sekcja „Cena” na stronie głównej.
+
+## Scena pionowa na telefon (`public/img/pion`, od 2.11.2026)
+- Źródła w `zrodla-scen/pion/` (w .gitignore): `baza.png` (dom „garaz-dach-7”, gpt_image_2_5, 1520×2688), `noc.png` i warianty jako edycje bazy: `panele`, `falownik`, `deye1..3`, `fox1..3`, `auto`, `agregat`. Wybrane wersje: panele = `panele-b`, agregat = `agregat-b` (w ogródku przy podjeździe). Pozostałe pliki w folderze to odrzucone koncepcje.
+- `warstwy-pion.py <zrodla-scen/pion> <public/img/pion> <wersja>` — wyrównuje każdy wariant do bazy (korelacja fazowa), wycina łatki: magazyny i falownik jako całe wnętrze bramy garażu, panele z rozmytej różnicy (dach domu + garażu), auto i agregat z różnicy w ROI. Zapisuje `dom/noc/<id>.vN.webp` + `manifest.json`.
+- Potem wygeneruj `src/components/konfigurator3d/warstwyPion.ts` z `manifest.json` (skrypt node z sesji 2.11: typ `WarstwaPionId`, `PION`, `WARSTWY_PION`) i podbij wersję.
+- Komponent: `ScenaPion.tsx` (tylko < 640 px; desktop i tablet dalej `Scena.tsx`). Kroki „Marka”/„Wielkość” używają zbliżenia garażu z `public/img/garaz`, wykadrowanego pionowo.
+- Zrzuty telefonu: Playwright, viewport 390×844, `isMobile` — przewiń do `#cena`, klikaj tylko widoczne przyciski (`:visible`), bo panele mają osobne wersje na telefon i desktop.

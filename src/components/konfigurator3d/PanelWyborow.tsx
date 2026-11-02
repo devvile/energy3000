@@ -135,7 +135,30 @@ export function PanelMarka({ k }: { k: Konfigurator }) {
   return (
     <div>
       <Naglowek nr={2} tytul="Marka magazynu" opis="Montujemy obie. Patrz, jak magazyn wjeżdża do garażu." />
-      <div className="space-y-3">
+      {/* Telefon: przełącznik w jednej linii i jedno zdanie — duże karty były większe niż scena. */}
+      <div className="sm:hidden">
+        <div className="grid grid-cols-2 gap-1 rounded-full border border-white/15 bg-white/[0.04] p-1">
+          {LINIE_IDS.map((id) => {
+            const on = stan.linia === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => akcje.ustawLinie(id)}
+                aria-pressed={on}
+                className={`rounded-full py-2.5 text-base font-medium tracking-[-0.02em] transition-colors duration-500 ${on ? "bg-cream text-ink" : "text-foreground/75"}`}
+              >
+                {LINIE[id].nazwa}
+              </button>
+            );
+          })}
+        </div>
+        <p key={stan.linia} className="krok-in mt-3 text-sm leading-relaxed">
+          <span className="font-medium">{LINIE[stan.linia].haslo}.</span>{" "}
+          <span className="text-foreground/65">{LINIE[stan.linia].dlaKogo}</span>
+        </p>
+      </div>
+      <div className="hidden space-y-3 sm:block">
         {LINIE_IDS.map((id) => {
           const l = LINIE[id];
           const on = stan.linia === id;
@@ -203,7 +226,46 @@ export function PanelWielkosc({ k }: { k: Konfigurator }) {
   return (
     <div>
       <Naglowek nr={3} tytul="Wielkość" opis="Program wymaga 2 kWh na każdy kilowat paneli. Większy magazyn rozbudujesz później." />
-      <div className="space-y-3">
+      {/* Telefon: trzy kafelki w rzędzie, opis tylko wybranego rozmiaru. */}
+      <div className="sm:hidden">
+        <div className="grid grid-cols-3 gap-2">
+          {zestawyLinii(stan.linia).map((z) => {
+            const on = stan.rozmiar === z.rozmiar;
+            const polecany = k.polecanyRozmiar === z.rozmiar;
+            return (
+              <button
+                key={z.rozmiar}
+                type="button"
+                onClick={() => akcje.ustawRozmiar(z.rozmiar)}
+                aria-pressed={on}
+                className={`relative rounded-2xl border px-3 py-2.5 text-left transition-colors duration-500 ${
+                  on ? "border-sun/60 bg-cream text-ink" : "border-white/15 bg-white/[0.04]"
+                }`}
+              >
+                <span className="flex items-baseline justify-between">
+                  <span className="font-serif text-2xl italic leading-none">{z.rozmiar.toUpperCase()}</span>
+                  {polecany && <span className="size-2 rounded-full bg-sun shadow-[0_0_8px_rgba(255,159,69,0.9)]" aria-label="polecany" />}
+                </span>
+                <span className="mt-1.5 block text-lg font-medium tracking-[-0.04em]">
+                  {formatKwh(z.kwh)}
+                  <span className="ml-0.5 font-serif text-xs italic tracking-normal">kWh</span>
+                </span>
+                <span className={`block text-xs ${on ? "text-ink/65" : "text-foreground/60"}`}>{formatZl(z.cena)}</span>
+              </button>
+            );
+          })}
+        </div>
+        {(() => {
+          const z = zestawyLinii(stan.linia).find((x) => x.rozmiar === stan.rozmiar);
+          return z ? (
+            <p key={z.rozmiar} className="krok-in mt-3 text-xs leading-relaxed text-foreground/65">
+              <span className="text-foreground">{ROZMIAR_OPIS[z.rozmiar]}</span> · {MODULY[z.rozmiar]} {MODULY[z.rozmiar] === 1 ? "moduł" : "moduły"} · PV do {formatKwh(z.pvMaxKwp)} kWp
+              {k.polecanyRozmiar === z.rozmiar ? " · polecany do Twoich paneli" : ""}. {z.dom}
+            </p>
+          ) : null;
+        })()}
+      </div>
+      <div className="hidden space-y-3 sm:block">
         {zestawyLinii(stan.linia).map((z) => {
           const on = stan.rozmiar === z.rozmiar;
           const polecany = k.polecanyRozmiar === z.rozmiar;
@@ -377,9 +439,10 @@ export function PanelPodsumowanie({ k }: { k: Konfigurator }) {
           ))}
         </ul>
       )}
+      {/* Na telefonie ten sam przycisk jest w stopce — bez powtórki. */}
       <a
         href="#wycena"
-        className="cta group mt-5 flex w-full items-center justify-between rounded-full bg-sun py-2 pl-6 pr-2 text-base font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
+        className="cta group mt-5 hidden w-full sm:flex items-center justify-between rounded-full bg-sun py-2 pl-6 pr-2 text-base font-medium text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02]"
       >
         {stan.sytuacja === "brak-pv" ? "Zostaw numer" : "Zamów wycenę tego zestawu"}
         <span className="flex size-10 items-center justify-center rounded-full bg-ink text-cream transition-transform duration-500 group-hover:rotate-45">

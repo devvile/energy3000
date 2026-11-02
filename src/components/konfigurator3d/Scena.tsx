@@ -30,7 +30,7 @@ const ROZMIAR_N = { s: 1, m: 2, l: 3 } as const;
 // szerokości), więc zamiast przesuwać warstwy (szwy na ścianie) przesuwamy cały kadr: środek widocznego sprzętu
 // trafia zawsze w ten sam punkt ekranu. Na telefonie scena jest wąska, więc kadr jest mocniej przybliżony.
 const LINIA_PODLOGI_G = 74; // % wysokości kadru garażu: styk ściany z podłogą
-function srodekSprzetu(id: WarstwaGarazId) {
+export function srodekSprzetu(id: WarstwaGarazId) {
   const p = WARSTWY_GARAZ[id];
   const naPodlodze = p.y + p.h >= 99; // łatka sięga do dołu kadru (odbicie w posadzce) — liczymy do linii podłogi
   return { x: p.x + p.w / 2, y: naPodlodze ? (p.y + LINIA_PODLOGI_G) / 2 : p.y + p.h / 2 };

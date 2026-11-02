@@ -12,6 +12,7 @@ import { useKonfigurator } from "../konfigurator/useKonfigurator";
 import { Hud } from "./Hud";
 import { PanelDodatki, PanelDom, PanelMarka, PanelPodsumowanie, PanelWielkosc } from "./PanelWyborow";
 import { Scena, type Kamera } from "./Scena";
+import { ScenaPion } from "./ScenaPion";
 
 const KROKI = ["Twój dom", "Marka", "Wielkość", "Dodatki", "Twój zestaw"] as const;
 
@@ -84,9 +85,9 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
       style={osadzony ? { scrollMarginTop: "-5rem" } : undefined}
       className="relative flex min-h-svh flex-col bg-[#140c07] text-foreground lg:h-svh lg:overflow-hidden"
     >
-      {/* Pasek górny */}
+      {/* Pasek górny. Na telefonie w sekcji strony głównej go nie ma: tytuł zabierał miejsce scenie, krok widać w panelu. */}
       <header
-        className={`relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4 ${osadzony ? "pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.25rem]" : ""}`}
+        className={`relative z-20 flex items-center justify-between px-5 py-3 sm:px-6 lg:py-4 ${osadzony ? "max-sm:hidden pt-[4.75rem] sm:pt-[5.25rem] lg:pt-[5.25rem]" : ""}`}
       >
         {osadzony ? (
           <h2 className="text-xl font-medium tracking-[-0.03em] lg:text-2xl">
@@ -129,7 +130,19 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
 
       {/* Scena + panel */}
       <div className="relative flex flex-1 flex-col lg:min-h-0 lg:flex-row">
-        <div className="relative flex items-center justify-center px-2 lg:min-h-0 lg:flex-1 lg:px-6">
+        {/* Telefon: pionowa scena od krawędzi do krawędzi (osobne grafiki), panel wyborów nachodzi na jej dół. */}
+        <ScenaPion
+          stan={stan}
+          wyliczenie={wyliczenie}
+          kamera={kamera}
+          plan={plan}
+          noc={noc}
+          pokazMagazyn={krok >= 1}
+          pokazMagazynDom={krok >= 3}
+          awaria={awaria}
+          className="h-[62svh] w-full shrink-0 sm:hidden"
+        />
+        <div className="relative hidden items-center justify-center px-2 sm:flex lg:min-h-0 lg:flex-1 lg:px-6">
           {/* Szerokość sceny z wysokości ekranu (klasa .scena-ramka w globals.css), żeby krok mieścił się bez przewijania. */}
           <div className={`scena-ramka w-full ${osadzony ? "osadzona" : ""}`}>
             <Scena stan={stan} wyliczenie={wyliczenie} kamera={kamera} plan={plan} noc={noc} pokazMagazyn={krok >= 1} pokazMagazynDom={krok >= 3} awaria={awaria} className="w-full" />
@@ -137,7 +150,7 @@ export function Kreator3d({ osadzony = false }: { osadzony?: boolean }) {
 
         </div>
 
-        <aside className="relative z-10 border-t border-white/10 bg-[#140c07]/80 px-5 py-4 backdrop-blur-xl sm:px-6 lg:w-[26rem] lg:py-6 lg:overflow-y-auto lg:border-l lg:border-t-0">
+        <aside className="relative z-10 px-5 py-4 max-sm:-mt-20 max-sm:pt-12 max-sm:[background:linear-gradient(to_bottom,transparent,#140c07_4.5rem)] sm:border-t sm:border-white/10 sm:bg-[#140c07]/80 sm:px-6 sm:backdrop-blur-xl lg:w-[26rem] lg:py-6 lg:overflow-y-auto lg:border-l lg:border-t-0">
           <div key={krok} className="krok-in">
             {krok === 0 && <PanelDom k={k} />}
             {krok === 1 && <PanelMarka k={k} />}
