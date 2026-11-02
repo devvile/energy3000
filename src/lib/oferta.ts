@@ -8,7 +8,7 @@ export const BRAND = "E3000";
 
 export const PHONE = "513 301 081"; // PROPOZYCJA — tymczasowo numer Patryka
 export const PHONE_HREF = "tel:+48513301081";
-export const EMAIL = "biuro@energy3000.pl"; // po aliasie w Google Workspace → biuro@e3000.pl
+export const EMAIL = "biuro@e3000.pl"; // alias domeny w Google Workspace (od 2.11.2026); stary biuro@energy3000.pl nadal odbiera
 export const HOURS = "pn–pt 8:00–20:00, sob 9:00–14:00"; // PROPOZYCJA
 export const REGION = "Kielce + 100 km";
 
