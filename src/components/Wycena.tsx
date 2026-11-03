@@ -139,7 +139,13 @@ export function Wycena() {
                     required
                     autoComplete="postal-code"
                     inputMode="numeric"
-                    pattern="[0-9]{2}-?[0-9]{3}"
+                    pattern="[0-9]{2}[ \-–—]?[0-9]{3}"
+                    title="Kod pocztowy, np. 25-001"
+                    onBlur={(e) => {
+                      // „25001”, „25 001”, „25–001” → „25-001”
+                      const c = e.currentTarget.value.replace(/\D/g, "");
+                      if (c.length === 5) e.currentTarget.value = `${c.slice(0, 2)}-${c.slice(2)}`;
+                    }}
                     className="field"
                     placeholder="25-001"
                   />

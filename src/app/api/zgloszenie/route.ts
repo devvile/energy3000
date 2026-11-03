@@ -20,8 +20,11 @@ export async function POST(request: Request) {
 
   const imie = tekst(d.imie, 60);
   const telefon = tekst(d.telefon, 30);
-  const kod = tekst(d.kod, 10);
-  if (!imie || telefon.replace(/\D/g, "").length < 9 || !/^\d{2}-?\d{3}$/.test(kod)) {
+  // Kod pocztowy: przyjmujemy „25-001”, „25001”, „25 001”, „25–001”; do arkusza zawsze „25-001”.
+  const kodSurowy = tekst(d.kod, 10);
+  const kodCyfry = kodSurowy.replace(/\D/g, "");
+  const kod = `${kodCyfry.slice(0, 2)}-${kodCyfry.slice(2)}`;
+  if (!imie || telefon.replace(/\D/g, "").length < 9 || !/^\d{2}[\s\-–—]?\d{3}$/.test(kodSurowy)) {
     return Response.json({ ok: false, blad: "niepoprawne dane" }, { status: 400 });
   }
   const konfiguracja = tekst(d.konfiguracja, 400);
